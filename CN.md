@@ -7,6 +7,8 @@ Organization: Nervos Foundation
 Created: 2019-6-19
 ---
 # CKB Consensus Protocol
+ 
+ # CKB 共识协议
 
 * [Abstract](#Abstract)
 * [Motivation](#Motivation)
@@ -17,6 +19,17 @@ Created: 2019-6-19
 * [Specification](#Specification)
   * [Two-Step Transaction Confirmation](#Two-Step-Transaction-Confirmation)
   * [Dynamic Difficulty Adjustment Mechanism](#Dynamic-Difficulty-Adjustment-Mechanism)
+  
+ * [概述](#Abstract)
+* [研究动机](#Motivation)
+* [技术概述](#Technical-Overview)
+  * [消除区块传播瓶颈](#Eliminating-the-Bottleneck-in-Block-Propagation)
+  * [利用缩短的延迟提高吞吐量](#Utilizing-the-Shortened-Latency-for-Higher-Throughput)
+  * [缓解自私挖矿攻击](#Mitigating-Selfish-Mining-Attacks)
+* [规范](#Specification)
+  * [两步交易确认](#Two-Step-Transaction-Confirmation)
+  * [动态难度调节机制](#Dynamic-Difficulty-Adjustment-Mechanism)
+ 
 
 <a name="Abstract"></a>
 ## Abstract
