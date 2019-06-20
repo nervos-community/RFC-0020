@@ -9,18 +9,8 @@ Created: 2019-6-19
 # CKB Consensus Protocol
  
  # CKB 共识协议
-
-* [Abstract](#Abstract)
-* [Motivation](#Motivation)
-* [Technical Overview](#Technical-Overview)
-  * [Eliminating the Bottleneck in Block Propagation](#Eliminating-the-Bottleneck-in-Block-Propagation)
-  * [Utilizing the Shortened Latency for Higher Throughput](#Utilizing-the-Shortened-Latency-for-Higher-Throughput)
-  * [Mitigating Selfish Mining Attacks](#Mitigating-Selfish-Mining-Attacks)
-* [Specification](#Specification)
-  * [Two-Step Transaction Confirmation](#Two-Step-Transaction-Confirmation)
-  * [Dynamic Difficulty Adjustment Mechanism](#Dynamic-Difficulty-Adjustment-Mechanism)
   
- * [概述](#Abstract)
+* [概述](#Abstract)
 * [研究动机](#Motivation)
 * [技术概述](#Technical-Overview)
   * [消除区块传播瓶颈](#Eliminating-the-Bottleneck-in-Block-Propagation)
