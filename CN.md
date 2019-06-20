@@ -87,14 +87,16 @@ In addition, we prove that selfish mining is no longer profitable in our protoco
 此外，我们证明自私挖矿在我们的协议中不再有利可图。这个证明是意义重大的，因为Vitalik，Grunspan和Perez-Marco的非正式论证并不能排除攻击者适应修改后的机制并仍然获得不公平的区块奖励的可能性。例如，攻击者可能在第一个周期内暂时关闭一些采矿装备，导致修改后的难度调整算法低估网络的计算能力，并在第二个时期开始自私挖矿以获得更高的总体时间平均奖励。我们证明，在我们的协议中，无论攻击者如何将其挖矿能力划分为诚实的挖矿，自私挖矿和闲置，以及攻击涉及多少个周期，自私采矿都无利可图。详细证明将在稍后公布。
 
 <a name="Specification"></a>
-## Specification
+## 规范
 
 <a name="Two-Step-Transaction-Confirmation"></a>
-### Two-Step Transaction Confirmation
+### 两步交易确认
 
 In our protocol, we use a two-step transaction confirmation to eliminate the aforementioned block propagation bottleneck, regardless of how short the block interval is. We start by defining the two steps and the block structure, and then introduce the new block propagation protocol. 
 
-#### Definitions
+在我们的协议中，我们使用两步交易确认来消除上述区块传播瓶颈，无论区块间隔有多短。我们首先定义两个步骤和区块结构，然后介绍新的区块传播协议。
+
+#### 定义
 
 > **Definition 1:** A transaction’s proposal id `txpid` is defined as the first *l* bits of the transaction hash `txid`.
 
