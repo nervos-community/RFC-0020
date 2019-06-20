@@ -15,7 +15,7 @@ Created: 2019-6-19
 * [技术概述](#Technical-Overview)
   * [消除区块传播瓶颈](#Eliminating-the-Bottleneck-in-Block-Propagation)
   * [利用缩短的延迟提高吞吐量](#Utilizing-the-Shortened-Latency-for-Higher-Throughput)
-  * [缓解自私挖矿攻击](#Mitigating-Selfish-Mining-Attacks)
+  * [避免自私挖矿攻击](#Mitigating-Selfish-Mining-Attacks)
 * [规范](#Specification)
   * [两步交易确认](#Two-Step-Transaction-Confirmation)
   * [动态难度调节机制](#Dynamic-Difficulty-Adjustment-Mechanism)
@@ -73,10 +73,10 @@ Departing from this observation, our protocol eliminates the bottleneck by decou
 
 Our protocol prescribes that blockchain blocks refer to all orphaned blocks as uncles. This information allows us to estimate the current block propagation latency and dynamically adjust the expected block interval, increasing the throughput when the latency improves. Accordingly, our difficulty adjustment targets a fixed orphan rate to utilize the shortened latency without compromising security. The protocol hard-codes the upper and lower bounds of the interval to defend against DoS attacks and avoid overloading the nodes. In addition, the block reward is adjusted proportionally to the expected block interval within an epoch, so that the expected time-averaged reward is independent of the block interval.
 
-我们的协议规定区块将所有孤立的块称为叔块。此信息允许我们估计当前块传播延迟并动态调整预期的区块间隔，从而在延迟改善时增加吞吐量。因此，我们的难度调整目标是一个固定的孤块率，以利用缩短的延迟而不会影响安全性。该协议对间隔的上限和下限进行硬编码，以防止DoS攻击并避免节点过载。另外，块奖励与间隔内的预期块间隔成比例地调整，使得预期时间平均奖励独立于区块间隔。
+我们的协议规定区块将所有孤立的块称为叔块。此信息允许我们估计当前块传播延迟并动态调整预期的区块间隔，从而在延迟改善时增加吞吐量。因此，我们的难度调整目标是一个固定的孤块率，以利用缩短的延迟而不会影响安全性。该协议对间隔的上限和下限进行硬编码，以防止DoS攻击并避免节点过载。另外，块奖励与间隔内的预期区块间隔成比例地调整，使得预期时间平均奖励独立于区块间隔。
 
 <a name="Mitigating-Selfish-Mining-Attacks"></a>
-### Mitigating Selfish Mining Attacks
+### 避免自私挖矿攻击
 
 Our protocol incorporate all blocks, including uncles, in the difficulty adjustment when estimating the network's computing power, so that the new difficulty is independent of the orphan rate, following the suggestion of [Vitalik](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-100.md), [Grunspan and Perez-Marco](https://arxiv.org/abs/1805.08281).
 
