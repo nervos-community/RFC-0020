@@ -22,11 +22,15 @@ Created: 2019-6-19
  
 
 <a name="Abstract"></a>
-## Abstract
+## 概述
 
 Bitcoin's Nakamoto Consensus (NC) is well-received due to its simplicity and low communication overhead. However, NC suffers from two kinds of drawback: first, its transaction processing throughput is far from satisfactory; second, it is vulnerable to a selfish mining attack, where attackers can gain more block rewards by deviating from the protocol's prescribed behavior.
 
+比特币的中本聪共识（NC）因其简单性和低通信开销而广受好评。然而，NC存在以下两种缺点：第一，其交易处理吞吐量远远不能令人满意;第二，它容易受到自私挖矿攻击，攻击者可以通过偏离协议规定的行为来获取更多的区块奖励。
+
 The CKB consensus protocol is a variant of NC that raises its performance limit and selfish mining resistance while keeping its merits. By identifying and eliminating the bottleneck in NC's block propagation latency, our protocol supports very short block interval without sacrificing security. The shortened block interval not only raises the throughput, but also lowers the transaction confirmation latency. By incorporating all valid blocks in the difficulty adjustment, selfish mining is no longer profitable in our protocol.
+
+CKB共识协议是NC共识协议的一种变体，它在保持其优点的同时提高了其性能极限和增大自私挖矿的难度。通过识别并消除NC块传播延迟的瓶颈，我们的协议支持非常短的区块间隔，而不会牺牲安全性。缩短的区块间隔不仅提高了吞吐量，还降低了交易确认延迟。通过在难度调整中合并所有有效块，自私挖矿在我们的协议中不再有利可图。
 
 <a name="Motivation"></a>
 ## Motivation
