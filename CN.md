@@ -30,7 +30,7 @@ Bitcoin's Nakamoto Consensus (NC) is well-received due to its simplicity and low
 
 The CKB consensus protocol is a variant of NC that raises its performance limit and selfish mining resistance while keeping its merits. By identifying and eliminating the bottleneck in NC's block propagation latency, our protocol supports very short block interval without sacrificing security. The shortened block interval not only raises the throughput, but also lowers the transaction confirmation latency. By incorporating all valid blocks in the difficulty adjustment, selfish mining is no longer profitable in our protocol.
 
-CKB共识协议是NC共识协议的一种变体，它在保持其优点的同时提高了其性能极限和增大自私挖矿的难度。通过识别并消除NC块传播延迟的瓶颈，我们的协议支持非常短的区块间隔，而不会牺牲安全性。缩短的区块间隔不仅提高了吞吐量，还降低了交易确认延迟。通过在难度调整中合并所有有效块，自私挖矿在我们的协议中不再有利可图。
+CKB共识协议是NC共识协议的一种变体，它在保持其优点的同时提高了其性能极限和增大自私挖矿的阻力。通过识别并消除NC块传播延迟的瓶颈，我们的协议支持非常短的区块间隔，而不会牺牲安全性。缩短的区块间隔不仅提高了吞吐量，还降低了交易确认延迟。通过在难度调整中合并所有有效块，自私挖矿在我们的协议中不再有利可图。
 
 <a name="Motivation"></a>
 ## 研究动机
@@ -48,6 +48,8 @@ Moreover, the security of NC is undermined by a [**selfish mining attack**](http
 此外，NC的安全性受到[**自私挖矿攻击**](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf)的破坏，这使得攻击者可以通过故意孤立的其他矿工开采的块从而获得不公平的区块奖励。研究人员观察到，不公平的利润源于NC的难度调整机制，该机制在估计网络的计算能力时忽略了孤块的障碍。通过这种机制，自私挖矿导致的孤儿率上升导致挖矿难度降低，使攻击者获得高于平均的区块奖励[[1](https://eprint.iacr.org/2016/555.pdf), [2](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-100.md), [3](https://arxiv.org/abs/1805.08281)]。
 
 In this RFC, we present the CKB consensus protocol, a consensus protocol that raises NC's performance limit and selfish mining resistance while keeping all NC's merits. Our protocol supports very short block interval by reducing the block propagation latency. The shortened block interval not only raises the blockchain's throughput, but also minimizes the transaction confirmation latency without decreasing the level of confidence, as the orphan rate remains low. Selfish mining is no longer profitable as we incorporate all blocks, including uncles, in the difficulty adjustment when estimating the network's computing power, so that the new difficulty is independent of the orphan rate.
+
+在此意见稿中，我们提出了CKB共识协议，该共识协议提高了NC的性能极限和增大自私挖矿的阻力，同时保留了所有NC的优点。我们的协议通过减少区块传播延迟来支持非常短的区块间隔。缩短的块间隔不仅提高了区块链的吞吐量，而且在不降低信任等级的情况下最小化了交易确认延迟，因为孤块率可以保持较低范围。自私挖矿不再有利可图，因为我们在估算网络的计算能力时将所有块（包括叔块）纳入难度调整中，使新难度与孤块率无关。
 
 <a name="Technical-Overview"></a>
 ## Technical Overview
