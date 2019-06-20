@@ -52,21 +52,28 @@ In this RFC, we present the CKB consensus protocol, a consensus protocol that ra
 在此意见稿中，我们提出了CKB共识协议，该共识协议提高了NC的性能极限和增大自私挖矿的阻力，同时保留了所有NC的优点。我们的协议通过减少区块传播延迟来支持非常短的区块间隔。缩短的块间隔不仅提高了区块链的吞吐量，而且在不降低信任等级的情况下最小化了交易确认延迟，因为孤块率可以保持较低范围。自私挖矿不再有利可图，因为我们在估算网络的计算能力时将所有块（包括叔块）纳入难度调整中，使新难度与孤块率无关。
 
 <a name="Technical-Overview"></a>
-## Technical Overview
+## 技术概述
 
 Our consensus protocol makes three changes to NC.
 
+我们的共识协议对NC进行了三个优化。
+
 <a name="#Eliminating-the-Bottleneck-in-Block-Propagation"></a>
-### Eliminating the Bottleneck in Block Propagation
+### 消除区块传播瓶颈
 
 [Bitcoin's developers identify](https://www.youtube.com/watch?v=EHIuuKCm53o) that when the block interval decreases, the bottleneck in block propagation latency is transferring **fresh transactions**, which are newly broadcast transactions that have not finished propagating to the network when embedded in the latest block. Nodes that have not received these transactions must request them before forwarding the block to their neighbors. The resulted delay not only limits the blockchain's performance, but can also be exploited in a **de facto selfish mining attack**, where attackers deliberately embed fresh transactions in their blocks, hoping that the longer propagation latency gives them an advantage in finding the next block to gain more rewards.
+
+
+[比特币的开发人员发现](https://www.youtube.com/watch?v=EHIuuKCm53o)，当区块间隔缩短时，区块传播延迟的瓶颈就是传递**新的交易**，这些新交易是在生成最新块时，尚未完成广播到网络的新广播交易。没有收到这些交易的节点必须在将块转发给其他节点之前请求它们。由此产生的延迟不仅限制了区块链的性能，而且还可以在**自私挖矿攻击**中被利用，攻击者故意在其块中嵌入新的交易，希望较长的传播延迟使他们有机会找到下一个块来获取更多奖励。
 
 Departing from this observation, our protocol eliminates the bottleneck by decoupling NC's transaction confirmation into two separate steps: **propose** and **commit**. A transaction is proposed if its truncated hash, named `txpid`, is embedded in the **proposal zone** of a blockchain block or its **uncles**---orphaned blocks that are referred to by the blockchain block. Newly proposed transactions affect neither the block validity nor the block propagation, as a node can start transferring the block to its neighbors before receiving these transactions. The transaction is committed if it appears in the **commitment zone** in a window starting several blocks after its proposal. This two-step confirmation rule eliminates the block propagation bottleneck, as committed transactions in a new block are already received and verified by all nodes when they are proposed. The new rule also effectively mitigates de facto selfish mining by limiting the attack time window.
 
 <a name="Utilizing-the-Shortened-Latency-for-Higher-Throughput"></a>
-### Utilizing the Shortened Latency for Higher Throughput
+### 利用缩短的延迟提高吞吐量
 
 Our protocol prescribes that blockchain blocks refer to all orphaned blocks as uncles. This information allows us to estimate the current block propagation latency and dynamically adjust the expected block interval, increasing the throughput when the latency improves. Accordingly, our difficulty adjustment targets a fixed orphan rate to utilize the shortened latency without compromising security. The protocol hard-codes the upper and lower bounds of the interval to defend against DoS attacks and avoid overloading the nodes. In addition, the block reward is adjusted proportionally to the expected block interval within an epoch, so that the expected time-averaged reward is independent of the block interval.
+
+我们的协议规定区块将所有孤立的块称为叔块。此信息允许我们估计当前块传播延迟并动态调整预期的区块间隔，从而在延迟改善时增加吞吐量。因此，我们的难度调整目标是一个固定的孤块率，以利用缩短的延迟而不会影响安全性。该协议对间隔的上限和下限进行硬编码，以防止DoS攻击并避免节点过载。另外，块奖励与间隔内的预期块间隔成比例地调整，使得预期时间平均奖励独立于区块间隔。
 
 <a name="Mitigating-Selfish-Mining-Attacks"></a>
 ### Mitigating Selfish Mining Attacks
