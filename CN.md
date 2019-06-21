@@ -1,10 +1,10 @@
 ---
-Number: "0020"
-Category: Informational
-Status: Draft
-Author: <TBD>
-Organization: Nervos Foundation
-Created: 2019-6-19
+编号: "0020"
+类别: 资料
+状态: 草案
+作者: <TBD>
+组织: Nervos基金会
+创建: 2019-6-19
 ---
 # CKB Consensus Protocol
  
