@@ -22,14 +22,14 @@ Created: 2019-6-19
 <a name="Abstract"></a>
 ## 概述
 
-比特币的中本聪共识（NC）因其简单性和低通信开销而广受好评。然而，NC存在以下两种缺点：第一，其交易处理吞吐量远远不能令人满意;第二，它容易受到自私挖矿攻击，攻击者可以通过偏离协议规定的行为来获取更多的区块奖励。
+比特币的中本聪共识（NC）因其简单性和低通信开销而广受好评。然而，NC存在以下两种缺点：第一，其交易处理吞吐量大小远远不能令人满意;第二，它容易受到自私挖矿攻击，攻击者可以通过偏离协议规定的行为来获取更多的区块奖励。
 
-CKB共识协议是NC共识协议的一种变体，它在保持其优点的同时提高了其性能极限和增大自私挖矿的阻力。通过识别并消除NC块传播延迟的瓶颈，我们的协议支持非常短的区块间隔，而不会牺牲安全性。缩短的区块间隔不仅提高了吞吐量，还降低了交易确认延迟。通过在难度调整中合并所有有效块，自私挖矿在我们的协议中不再有利可图。
+CKB共识协议是NC共识协议的一种变体，它在保持其优点的同时提高了其性能极限和增大自私挖矿的阻力。通过识别并消除NC块传播延迟的瓶颈，我们的协议在不牺牲安全性的前提下,支持非常短的区块间隔。缩短的区块间隔不仅提高了吞吐量，还降低了交易确认延迟。通过在难度调整中合并所有有效块，自私挖矿在我们的协议中不再有利可图。
 
 <a name="Motivation"></a>
 ## 研究动机
 
-尽管已经提出了许多非NC共识机制，但NC与其替代方案相比具有以下三重优势。首先，它的安全性经过仔细审查和充分理解[[1](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf), [2](https://eprint.iacr.org/2014/765.pdf), [3](https://fc16.ifca.ai/preproceedings/30_Sapirshtein.pdf), [4](https://eprint.iacr.org/2016/454.pdf), [5](https://eprint.iacr.org/2016/1048.pdf), [6](https://eprint.iacr.org/2018/800.pdf), [7](https://eprint.iacr.org/2018/129.pdf), [8](https://arxiv.org/abs/1607.02420)],然而替代协议常常开放新的攻击矢量，无论是无意[[1](http://fc19.ifca.ai/preproceedings/180-preproceedings.pdf), [2](https://www.esat.kuleuven.be/cosic/publications/article-3005.pdf)] 还是依靠其安全性在实践中难以实现的假设[[1](https://arxiv.org/abs/1711.03936), [2](https://arxiv.org/abs/1809.06528)]。其次，NC最小化了共识协议的通信开销。在最理想的情况下，在比特币中传播1MB的块相当于广播大约13KB的压缩块[[1](https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki), [2](https://www.youtube.com/watch?v=EHIuuKCm53o)];所有诚实节点都会立即接受有效块。相反，替代协议通常需要不可忽略的通信开销来证明某些节点见证了块。例如，[Algorand](https://algorandcom.cdn.prismic.io/algorandcom%2Fa26acb80-b80c-46ff-a1ab-a8121f74f3a3_p51-gilad.pdf) 要求每个块都附带300KB的块证书。第三，NC的基于链的拓扑确保在块生成时确定事务全局顺序，这与所有智能合约编程模型兼容。采用其他拓扑结构的协议要么[放弃全局交易](https://allquantor.at/blockchainbib/pdf/sompolinsky2016spectre.pdf)，要么在经过长时间的确认延迟[[1](https://eprint.iacr.org/2018/104.pdf), [2](https://eprint.iacr.org/2017/300.pdf)]后才确认它，限制了其效率或功能。
+尽管已经提出了许多非NC共识机制，但NC与其替代方案相比具有以下三重优势。首先，它的安全性经过仔细审查和充分理解[[1](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf), [2](https://eprint.iacr.org/2014/765.pdf), [3](https://fc16.ifca.ai/preproceedings/30_Sapirshtein.pdf), [4](https://eprint.iacr.org/2016/454.pdf), [5](https://eprint.iacr.org/2016/1048.pdf), [6](https://eprint.iacr.org/2018/800.pdf), [7](https://eprint.iacr.org/2018/129.pdf), [8](https://arxiv.org/abs/1607.02420)],然而替代协议常常开放新的攻击矢量，无论是无意[[1](http://fc19.ifca.ai/preproceedings/180-preproceedings.pdf), [2](https://www.esat.kuleuven.be/cosic/publications/article-3005.pdf)] 还是依靠其安全性在实践中难以实现的假设[[1](https://arxiv.org/abs/1711.03936), [2](https://arxiv.org/abs/1809.06528)]。其次，NC最小化了共识协议的通信开销。在最理想的情况下，在比特币中传播1MB的块相当于广播大约13KB的压缩块[[1](https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki), [2](https://www.youtube.com/watch?v=EHIuuKCm53o)];所有诚实节点都会立即接受有效块。相反，替代协议通常需要不可忽略的通信开销来证明某些节点见证了块。例如，[Algorand](https://algorandcom.cdn.prismic.io/algorandcom%2Fa26acb80-b80c-46ff-a1ab-a8121f74f3a3_p51-gilad.pdf) 要求每个块都附带300KB的块证书。第三，NC的基于链的拓扑确保在块生成时确定交易全局顺序，这与所有智能合约编程模型兼容。采用其他拓扑结构的协议要么[放弃全局交易](https://allquantor.at/blockchainbib/pdf/sompolinsky2016spectre.pdf)，要么在经过长时间的确认延迟[[1](https://eprint.iacr.org/2018/104.pdf), [2](https://eprint.iacr.org/2017/300.pdf)]后才确认它，限制了其效率或功能。
 
 尽管NC有很多优点，但其可扩展性差阻碍了它每秒处理多笔交易。两个参数共同限制系统的吞吐量：最大区块容量和预期的块间隔。例如，比特币强制执行大约4MB的区块容量上限，并以10分钟的块间隔为目标，并且具有**动态难度调整机制**，换算为大约每秒10笔交易（TPS）。增加区块容量或减小区块间隔会导致更长时间的区块传播延迟或更频繁的出块;两种方法都提高了在其他块区传播期间生成的新块的比例，从而提高了竞争区块的比例。由于竞争对手中的最多只有一个块有助于交易确认，因此浪费了传播其他**孤块**的节点带宽，从而限制了系统的有效吞吐量。此外，提高孤块率会降低双花攻击的难度[[1](<https://fc15.ifca.ai/preproceedings/paper_30.pdf>), [2](<https://fc15.ifca.ai/preproceedings/paper_101.pdf>)]，从而降低协议的安全性。
 
@@ -71,36 +71,36 @@ Our consensus protocol makes three changes to NC.
 
 #### 定义
 
-> **Definition 1:** A transaction’s proposal id `txpid` is defined as the first *l* bits of the transaction hash `txid`.
+> **定义 1:** 一个交易的提议的ID ‘txpid’ 被定义为交易哈希为‘txid’ 的前*l*位
 
-In our protocol, `txpid` does not need to be as globally unique as `txid`, as a `txpid` is used to identify a transaction among several neighboring blocks. Since we embed `txpid`s in both blocks and compact blocks, sending only the truncated `txid`s could reduce the bandwidth consumption. 
+在我们的协议中，‘txpid’（交易提议ID）不需要像‘txid’（交易哈希ID）一样全局唯一，因为‘txpid’用于标识几个相邻块之间的交易。由于我们在块和压缩块中都嵌入了‘txpid’，因此只发送截断的‘txid’可以减少带宽的消耗。
 
-When multiple transactions share the same `txpid`s, all of them are considered proposed. In practice, we can set *l* to be large enough so that the computational effort of finding a collision is non-trivial.
+当多个交易共享相同的‘txpid’时，所有的这些交易都认为是被提议的。在时间中，我们可以将*I*设置得足够大以至于找到碰撞的计算工作量是非常重要的。
 
-> **Definition 2:** A block *B*<sub>1</sub> is considered to be the *uncle* of another block *B*<sub>2</sub> if all of the following conditions are met:
->​	(1) *B*<sub>1</sub> and *B*<sub>2</sub> are in the same epoch, sharing the same difficulty;
->​	(2) height(*B*<sub>2</sub>) > height(*B*<sub>1</sub>);
->​	(3) *B*<sub>2</sub> is the first block in its chain to refer to *B*<sub>1</sub>. 
+> **定义 2:** 一个块 *B*<sub>1</sub> 被认为是另一个块 *B*<sub>2</sub>的 *叔*块，如果满足下列所有的条件：
+>​	(1) *B*<sub>1</sub>和*B*<sub>2</sub>处在同一个时期，共享相同的计算复杂度。
+>​	(2) 区块高度(*B*<sub>2</sub>) > 区块高度(*B*<sub>1</sub>);
+>​	(3) *B*<sub>2</sub> 是 *B*<sub>1</sub> 在链中第一个引用的块。 
 
-Our uncle definition is different from [that of Ethereum](https://github.com/ethereum/wiki/wiki/White-Paper#modified-ghost-implementation), in that we do not consider how far away the two blocks' first common ancestor is, as long as the two blocks are in the same epoch.
+我们对于叔块的定义是与[以太坊](https://github.com/ethereum/wiki/wiki/White-Paper#modified-ghost-implementation)不同的，因为我们不考虑这两个区块的第一共同祖先有多远，只要这两个区块处于同一时期。
 
-> **Definition 3:** A transaction is *proposed* at height *h*<sub>p</sub> if its `txpid` is in the proposal zone of the main chain block with height *h*<sub>p</sub> and this block’s uncles. 
+> **定义 3:** 一个交易是*被提议的*在区块高度*h*<sub>p</sub>如果它的‘txpid’位于区块高度为*h*<sub>p</sub>和这个块的叔块们的主链块的提议区域中。
 
-It is possible that a proposed transaction is previously proposed, in conflict with other transactions, or even malformed. These incidents do not affect the block’s validity, as the proposal zone is used to facilitate transaction synchronization.
+提议的交易有可能提前被提议，与其他交易相冲突，甚至是畸形的。这些事件不会影响块的有效性，因为提议区域被用于促进交易同步。
 
-> **Definition 4:** A non-coinbase transaction is *committed* at height *h*<sub>c</sub> if all of the following conditions are met: 
-> ​	(1) the transaction is proposed at height *h*<sub>p</sub> of the same chain, and *w<sub>close</sub>  ≤  h<sub>c</sub> − h*<sub>p</sub>  ≤  *w<sub>far</sub>*
-> ​	(2) the transaction is in the commitment zone of the main chain block with height *h*<sub>c</sub>; 
-> ​	(3) the transaction is not in conflict with any previously-committed transactions in the main chain. 
-> The coinbase transaction is committed at height *h*<sub>c</sub> if it satisfies (2).
+> **定义 4:** 一个非币基交易在区块高度*h*<sub>c</sub>被*提交*，如果满足下列所有条件：
+> ​	(1) 交易在同一条链的区块高度*h*<sub>p</sub>被提议，并且 *w<sub>close</sub>  ≤  h<sub>c</sub> − h*<sub>p</sub>  ≤  *w<sub>far</sub>*  
+> ​	(2) 交易在主链提交区区块高度*h*<sub>c</sub>的位置
+> ​	(3) 交易不与之前在主链中提交的任何交易冲突  
+> 币基交易在区块高度*h*<sub>c</sub>被提交如果满足条件（2）
 
-*w<sub>close</sub>* and *w<sub>far</sub>* define the closest and farthest on-chain distance between a transaction’s proposal and commitment. We require *w<sub>close</sub>*  to be large enough so that *w<sub>close</sub>* block intervals are long enough for a transaction to be propagated to the network. 
+*w<sub>close</sub>* 和*w<sub>far</sub>*定义了交易提案与提交的最近和最远的链上距离。我们要求*w<sub>close</sub>*足够大，以便于*w<sub>close</sub>*块间隔足够长，以便于将交易传播到整个网络。
 
-These two parameters are also set according to the maximum number of transactions in the proposed transaction pool of a node’s memory. As the total number of proposed transactions is limited, they can be stored in the memory so that there is no need to fetch a newly committed transaction from the hard disk in most occasions. 
+这两个参数也根据节点内存中交易池中的最大交易数量来设置。由于提议的交易总数是有限的，它们可以存储在存储器中，因此大多数情况下不需要从硬盘获取新提交的交易。
 
-A transaction is considered embedded in the blockchain when it is committed. Therefore, a receiver that requires σ confirmations needs to wait for at least *w<sub>close</sub>* +σ blocks after the transaction is broadcast to have confidence in the transaction. 
+交易在提交时被视为嵌入在区块链中。因此，需要进行σ次确认的接收者需要在广播交易之后等待至少*w<sub>close</sub>*+σ个区块来信任该交易。
 
-In practice, this *w<sub>close</sub>* - block extra delay is compensated by our protocol’s shortened block interval, so that the usability is not affected.
+在实践中，这个*w<sub>close</sub>* —— 区块的额外延迟由我们协议的缩短块间隔来进行延迟补偿，因此系统的可用性不会受到影响。
 
 #### Block and Compact Block Structure
 
