@@ -259,29 +259,29 @@ Now we can apply the upper and lower bounds to![1559065488436](images/1559065416
 
 Applying a lower bound ensures that an attacker cannot mine orphaned blocks deliberately to arbitrarily increase the block interval; applying an upper bound ensures that our protocol does not confirm more transactions than the capacity of most nodes.
 
-#### Determining the Target Difficulty
+#### 测定目标难度
 
-First, we introduce an adjusted orphan rate estimation ![1559065968791](images/1559065968791.png), which will be used to compute the target:
+首先，我们介绍一个调整后的孤儿率估算 ![1559065968791](images/1559065968791.png), 这将用于计算目标:
 
 ![1559065997745](images/1559065997745.png)
 
 
 
-Using ![1559065968791](images/1559065968791.png) instead of *o*<sub>ideal</sub> prevents some undesirable situations when the main chain block number reaches the upper or lower bound. Now we can compute *T*<sub>*i*+1</sub>:
+使用 ![1559065968791](images/1559065968791.png) 代替 *o*<sub>ideal</sub> 防止当当主链块编号达到上限或下限时出现一些不良情况。 现在我们可以计算 *T*<sub>*i*+1</sub>:
 
 ![1559066101731](images/1559066101731.png)
 
-where ![1559066131427](images/1559066131427.png) is the total hashes, ![1559066158164](images/1559066158164.png)is the total number of blocks. 
+这里的 ![1559066131427](images/1559066131427.png) 是总哈希, ![1559066158164](images/1559066158164.png)是区块的总数. 
 
-The denominator in Equation (7) is the number of hashes required to find a block.
+方程 (7) 中的分母 是找到区块所需的哈希数量.
 
-Note that if none of the edge cases are triggered, such as ![1559066233715](images/1559066233715.png)![1559066249700](images/1559066249700.png) or ![1559066329440](images/1559066329440.png)  , we can combine Equations (2), (6), and (7) and get:
+注意，如果没有触发任何边缘情况, 如 ![1559066233715](images/1559066233715.png)![1559066249700](images/1559066249700.png) 或 ![1559066329440](images/1559066329440.png)  , 我们可以结合方程 (2), (6), 和 (7) 并得到：
 
 ![1559066373372](images/1559066373372.png)
 
 
 
-This result is consistent with our intuition. On one hand, if the last epoch’s orphan rate *o*<sub>*i*</sub> is larger than the ideal value *o*<sub>ideal</sub>, the target lowers, thus increasing the difficulty of finding a block and raising the block interval if the total hash rate is unchanged. Therefore, the orphan rate is lowered as it is more unlikely to find a block during another block’s propagation. On the other hand, the target increases if the last epoch’s orphan rate is lower than the ideal value, decreasing the block interval and raising the system’s throughput.
+这个结果与我们的直觉一致。 一方面，如果最后一个时期的孤儿率 *o*<sub>*i*</sub> 大于理想值 *o*<sub>ideal</sub>, 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔. 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔。 另一方面，如果最后一个时期的孤儿率低于理想值，则目标增加，减少了块间隔并提高了系统的吞吐量。
 
 #### Computing the Reward for Each Block
 
