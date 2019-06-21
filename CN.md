@@ -1,10 +1,10 @@
 ---
-Number: "0020"
-Category: Informational
-Status: Draft
-Author: <TBD>
-Organization: Nervos Foundation
-Created: 2019-6-19
+编号: "0020"
+类别: 资料
+状态: 草案
+作者: <TBD>
+组织: Nervos基金会
+创建: 2019-6-19
 ---
 # CKB Consensus Protocol
  
@@ -165,15 +165,15 @@ Our protocol’s block propagation protocol removes the extra round trip of fres
 The first two rules ensure that the extra round trip caused by a de facto selfish mining attack never lasts for more than one hop.
 
 <a name="Dynamic-Difficulty-Adjustment-Mechanism"></a>
-### Dynamic Difficulty Adjustment Mechanism
+### 动态难度调整机制
 
-We modify the Nakamoto Consensus difficulty adjustment mechanism, so that: (1) Selfish mining is no longer profitable; (2) Throughput is dynamically adjusted based on the network’s bandwidth and latency. To achieve (1), our protocol incorporates all blocks, instead of only the main chain, in calculating the **adjusted hash rate estimation** of the last epoch, which determines the amount of computing effort required in the next epoch for each reward unit. To achieve (2), our protocol calculates the number of main chain blocks in the next epoch with the last epoch’s orphan rate. The block reward and target are then computed by combining these results. 
+我们修改了Nakamoto 共识难度调整机制，以便: (1) 自私挖矿不再有利可图; (2) 根据网络的带宽和延迟动态调整吞吐量。实现目标1, 我们的协议在计算上一个时期的**调整后的哈希率估计**时包含所有块而不是仅主链, ，其确定每个奖励单元的下一个时期所需的计算工作量. 实现目标2, 我们的协议计算下一个时期中具有最后一个时期的孤儿率的主链块的数量。然后通过组合这些结果来计算块奖励和目标。
 
-Additional constraints are introduced to maximize the protocol’s compatibility:
+引入了附加约束以最大化协议的兼容性:
 
-1. All epochs have the same expected length *L<sub>ideal</sub>*, and the maximum block reward issued in an epoch R(*i*) depends only on the epoch number *i*, so that the dynamic block interval does not complicate the reward issuance policy. 
+1. 所有时期具有相同的预期长度 *L<sub>ideal</sub>*, 并且在时期 R(*i*) 中发布的最大块奖励仅取决于时期数 *i*, 因此动态块间隔不会使奖励发布策略复杂化. 
 
-2. Several upper and lower bounds are applied to the hash rate estimation and the number of main chain blocks, so that our protocol does not harm the decentralization or attack-resistance of the network.
+2. 几个上限和下限应用于哈希率估算和主链块的数量，因此我们的协议不会损害网络的去中心化或抗攻击性。
 
 #### Notations
 
