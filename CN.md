@@ -68,6 +68,8 @@ Our consensus protocol makes three changes to NC.
 
 Departing from this observation, our protocol eliminates the bottleneck by decoupling NC's transaction confirmation into two separate steps: **propose** and **commit**. A transaction is proposed if its truncated hash, named `txpid`, is embedded in the **proposal zone** of a blockchain block or its **uncles**---orphaned blocks that are referred to by the blockchain block. Newly proposed transactions affect neither the block validity nor the block propagation, as a node can start transferring the block to its neighbors before receiving these transactions. The transaction is committed if it appears in the **commitment zone** in a window starting several blocks after its proposal. This two-step confirmation rule eliminates the block propagation bottleneck, as committed transactions in a new block are already received and verified by all nodes when they are proposed. The new rule also effectively mitigates de facto selfish mining by limiting the attack time window.
 
+与此研究结果不同，我们的协议通过将NC的交易确认分解为两个单独的步骤来消除瓶颈：**提案**和**提交**。一笔交易如果将其截断的散列即`txid`发布到区块或**叔块**（由区块引用的孤立块）中，则打包到**提案区**。新提案的交易既不影响区块有效性也不影响区块的传播，因为节点可以在接收这些事务之前已经开始将区块传送到其他节点。如果交易在提案后的几个的周期中出现在 **提交区** 中，则打包该交易。这个两步确认规则既消除了块传播瓶颈，因为新块中的已提交事务已被所有节点接收并在提交时进行验证。新规则还通过限制攻击时间周期有效地减轻了自私挖矿攻击。
+
 <a name="Utilizing-the-Shortened-Latency-for-Higher-Throughput"></a>
 ### 利用缩短的延迟提高吞吐量
 
