@@ -131,24 +131,31 @@ A transaction is considered embedded in the blockchain when it is committed. The
 
 In practice, this *w<sub>close</sub>* - block extra delay is compensated by our protocol’s shortened block interval, so that the usability is not affected.
 
-#### Block and Compact Block Structure
+#### 区块和致密区块结构
 
-A block in our protocol includes the following fields:
+在我们的协议中，一个区块包含以下几部分:
 
-| Name            | Description                          |
+| 名称            | 描述                                 |
 | :-------------- | :----------------------------------- |
-| header          | block metadata                       |
-| commitment zone | transactions committed in this block |
-| proposal zone   | `txpid`s proposed in this block      |
-| uncle headers   | headers of uncle blocks              |
-| uncles’ proposal zones   | `txpid`s proposed in the uncles              |
+| header          | 区块元数据                       |
+| commitment zone | 提交进这个区块的交易 |
+| proposal zone   | `txpid` 提案区      |
+| uncle headers   | 叔块头              |
+| uncles’ proposal zones   | `txpid` 叔块提案区              |
 
 Similar to NC, in our protocol, a compact block replaces a block’s commitment zone with the transactions’ `shortid`s, a salt and a list of prefilled transactions. All other fields remain unchanged in [the compact block](https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki).
 
+与NC类似，在我们的协议中，一个致密区块使用交易的`shortid`即预填写的交易列表来替换区块的提交区。 [致密区块](https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki)的其他所有字段保持不变。
+
 Additional block structure rules:
+
+附加区块结构：
 
 - The total size of the first four fields should be no larger than the hard-coded **block size limit**. The main purpose of implementing a block size limit is to avoid overloading public nodes' bandwidth. The uncle blocks’ proposal zones do not count in the limit as they are usually already synchronized when the block is mined. 
 - The number of `txpid`s in a proposal zone also has a hard-coded upper bound.
+
+- 前四个字段的总大小不应大于硬编码的**区块大小限制**。实现区块大小限制的主要目的是避免超出公共节点的带宽。叔块的提案区不计入容量限制，因为它们通常在区块被挖掘时已经同步。
+- 提案区中`txpid`的数量也有硬编码的上限。
 
 Two heuristic requirements may help practitioners choose the parameters. First, the upper bound number of `txpid`s in a proposal zone should be no smaller than the maximum number of committed transactions in a block, so that even if *w<sub>close</sub>=w<sub>far</sub>*, this bound is not the protocol's throughput bottleneck. Second, ideally the compact block should be no bigger than 80KB. According to [a 2016 study by Croman et al.](https://fc16.ifca.ai/bitcoin/papers/CDE+16.pdf), messages no larger than 80KB have similar propagation latency in the Bitcoin network; larger messages propagate slower as the network throughput becomes the bottleneck. This number may change as the network condition improves.
 
