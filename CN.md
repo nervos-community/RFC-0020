@@ -131,40 +131,61 @@ A transaction is considered embedded in the blockchain when it is committed. The
 
 In practice, this *w<sub>close</sub>* - block extra delay is compensated by our protocol’s shortened block interval, so that the usability is not affected.
 
-#### Block and Compact Block Structure
+#### 区块和致密区块结构
 
-A block in our protocol includes the following fields:
+在我们的协议中，一个区块包含以下几部分:
 
-| Name            | Description                          |
+| 名称            | 描述                                 |
 | :-------------- | :----------------------------------- |
-| header          | block metadata                       |
-| commitment zone | transactions committed in this block |
-| proposal zone   | `txpid`s proposed in this block      |
-| uncle headers   | headers of uncle blocks              |
-| uncles’ proposal zones   | `txpid`s proposed in the uncles              |
+| header          | 区块元数据                       |
+| commitment zone | 提交进这个区块的交易 |
+| proposal zone   | `txpid` 提案区      |
+| uncle headers   | 叔块头              |
+| uncles’ proposal zones   | `txpid` 叔块提案区              |
 
 Similar to NC, in our protocol, a compact block replaces a block’s commitment zone with the transactions’ `shortid`s, a salt and a list of prefilled transactions. All other fields remain unchanged in [the compact block](https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki).
 
+与NC类似，在我们的协议中，一个致密区块使用交易的`shortid`即预填写的交易列表来替换区块的提交区。 [致密区块](https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki)的其他所有字段保持不变。
+
 Additional block structure rules:
+
+附加区块结构：
 
 - The total size of the first four fields should be no larger than the hard-coded **block size limit**. The main purpose of implementing a block size limit is to avoid overloading public nodes' bandwidth. The uncle blocks’ proposal zones do not count in the limit as they are usually already synchronized when the block is mined. 
 - The number of `txpid`s in a proposal zone also has a hard-coded upper bound.
 
+- 前四个字段的总大小不应大于硬编码的**区块大小限制**。实现区块大小限制的主要目的是避免超出公共节点的带宽。叔块的提案区不计入容量限制，因为它们通常在区块被挖掘时已经同步。
+- 提案区中`txpid`的数量也有硬编码的上限。
+
 Two heuristic requirements may help practitioners choose the parameters. First, the upper bound number of `txpid`s in a proposal zone should be no smaller than the maximum number of committed transactions in a block, so that even if *w<sub>close</sub>=w<sub>far</sub>*, this bound is not the protocol's throughput bottleneck. Second, ideally the compact block should be no bigger than 80KB. According to [a 2016 study by Croman et al.](https://fc16.ifca.ai/bitcoin/papers/CDE+16.pdf), messages no larger than 80KB have similar propagation latency in the Bitcoin network; larger messages propagate slower as the network throughput becomes the bottleneck. This number may change as the network condition improves.
 
-#### Block Propagation Protocol
+两个启发式需求可以帮助实践者选择参数。首先，提案区`txpid`的上限不应小于一个区块中提交的最大交易数量，这样即使 *w<sub>close</sub>=w<sub>far</sub>* 这个上限也不是协议的吞吐量瓶颈。其次，理想情况下，致密区块应该不大于80KB。根据[Croman等人2016年的一项研究](https://fc16.ifca.ai/bitcoin/papers/CDE+16.pdf), 不大于80KB的消息在比特币网络中具有相似的传播延迟; 较大的消息传播速度较慢，因为网络吞吐量成为了瓶颈。随着网络条件的改善，这个数字可能会发生变化。
+
+#### 区块传播协议
 
 In line with [[1](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf), [2](https://arxiv.org/abs/1312.7013), [3](https://eprint.iacr.org/2014/007.pdf)], nodes should broadcast all blocks with valid proofs-of-work, including orphans, as they may be referred to in the main chain as uncles. Valid proofs-of-work cannot be utilized to pollute the network, as constructing them is time-consuming. 
 
+根据[[1](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf), [2](https://arxiv.org/abs/1312.7013), [3](https://eprint.iacr.org/2014/007.pdf)], 节点应该广播所有具有有效工作证明的块，包括孤块，因为它们在主链中可能被称为叔块。有效的工作量证明不能用来污染网络，因为计算他们是消耗时间的。
+
 Our protocol’s block propagation protocol removes the extra round trip of fresh transactions in most occasions. When the round trip is inevitable, our protocol ensures that it only lasts for one hop in the propagation. This is achieved by the following three rules: 
 
+我们协议的区块传播协议在大多数情况下消除了新交易的额外往返广播。当往返广播不可避免时，我们的协议确保它仅在传播中持续一跳。这是通过以下三个规则实现的：
+
 1. If some committed transactions are previously unknown to the sending node, they will be embedded in the prefilled transaction list and sent along with the compact block. This only happens in a de facto selfish mining attack, as otherwise transactions are synchronized when they are proposed. This modification removes the extra round trip if the sender and the receiver share the same list of proposed, but-not-broadcast transactions. 
+
+如果发送节点先前不知道某些已提交的交易，则它们将嵌入在预先填充的交易列表中并与致密区块一起发送。事实上，这只发生在自私挖矿攻击中，否则交易会在提案时同步。如果发送方和接收方共享相同的提案列表却非广播交易列表，则此修改将删除额外的往返广播。
+
 2. If certain committed transactions are still missing, the receiver queries the sender with a short timeout. Triggering this mechanism requires not only a successful de facto selfish mining attack, but also an attack on transaction propagation to cause inconsistent proposed transaction pools among the nodes. Failing to send these transactions in time leads to the receiver disconnecting and blacklisting the sender. Blocks with incomplete commitment zones will not be propagated further.
+
+如果某些已提交的交易仍然丢失，则接收方将在短暂超时后查询发送方。触发此机制不仅需要成功的自私挖矿攻击，还需要对交易传播进行攻击，以使节点之间产生不一致的提案交易池。未能及时发送这些交易会导致接收方断开连接并将发送方列入黑名单。具有不完整提交区的区块将不会进一步传播。
 
 3. As long as the commitment zone is complete and valid, a node can start forwarding the compact block before receiving all newly-proposed transactions. In our protocol, a node requests the newly-proposed transactions from the upstream peer and sends compact blocks to other peers simultaneously. This modification does not downgrade the security as transactions in the proposal zone do not affect the block’s validity.
 
+只要提交区完整并有效，节点就可以在接收所有新提案的交易之前开始转发致密区块。在我们的协议中，节点从上游对等节点请求新提案的交易，并同时向其他对等节点发送致密块。此修改不会降低安全性，因为提案区中的交易不会影响区块的有效性。
 
 The first two rules ensure that the extra round trip caused by a de facto selfish mining attack never lasts for more than one hop.
+
+前两条规则确保了自私挖矿攻击造成的额外往返广播不会超过一跳。
 
 <a name="Dynamic-Difficulty-Adjustment-Mechanism"></a>
 ### 动态难度调整机制
