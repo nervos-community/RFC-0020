@@ -159,6 +159,8 @@ Additional block structure rules:
 
 Two heuristic requirements may help practitioners choose the parameters. First, the upper bound number of `txpid`s in a proposal zone should be no smaller than the maximum number of committed transactions in a block, so that even if *w<sub>close</sub>=w<sub>far</sub>*, this bound is not the protocol's throughput bottleneck. Second, ideally the compact block should be no bigger than 80KB. According to [a 2016 study by Croman et al.](https://fc16.ifca.ai/bitcoin/papers/CDE+16.pdf), messages no larger than 80KB have similar propagation latency in the Bitcoin network; larger messages propagate slower as the network throughput becomes the bottleneck. This number may change as the network condition improves.
 
+两个启发式需求可以帮助实践者选择参数。首先，提案区`txpid`的上限不应小于一个区块中提交的最大交易数量，这样即使 *w<sub>close</sub>=w<sub>far</sub>* 这个上限也不是协议的吞吐量瓶颈。其次，理想情况下，致密区块应该不大于80KB。根据[Croman等人2016年的一项研究](https://fc16.ifca.ai/bitcoin/papers/CDE+16.pdf), 不大于80KB的消息在比特币网络中具有相似的传播延迟; 较大的消息传播速度较慢，因为网络吞吐量成为了瓶颈。随着网络条件的改善，这个数字可能会发生变化。
+
 #### Block Propagation Protocol
 
 In line with [[1](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf), [2](https://arxiv.org/abs/1312.7013), [3](https://eprint.iacr.org/2014/007.pdf)], nodes should broadcast all blocks with valid proofs-of-work, including orphans, as they may be referred to in the main chain as uncles. Valid proofs-of-work cannot be utilized to pollute the network, as constructing them is time-consuming. 
