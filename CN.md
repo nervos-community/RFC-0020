@@ -161,19 +161,31 @@ Two heuristic requirements may help practitioners choose the parameters. First, 
 
 两个启发式需求可以帮助实践者选择参数。首先，提案区`txpid`的上限不应小于一个区块中提交的最大交易数量，这样即使 *w<sub>close</sub>=w<sub>far</sub>* 这个上限也不是协议的吞吐量瓶颈。其次，理想情况下，致密区块应该不大于80KB。根据[Croman等人2016年的一项研究](https://fc16.ifca.ai/bitcoin/papers/CDE+16.pdf), 不大于80KB的消息在比特币网络中具有相似的传播延迟; 较大的消息传播速度较慢，因为网络吞吐量成为了瓶颈。随着网络条件的改善，这个数字可能会发生变化。
 
-#### Block Propagation Protocol
+#### 区块传播协议
 
 In line with [[1](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf), [2](https://arxiv.org/abs/1312.7013), [3](https://eprint.iacr.org/2014/007.pdf)], nodes should broadcast all blocks with valid proofs-of-work, including orphans, as they may be referred to in the main chain as uncles. Valid proofs-of-work cannot be utilized to pollute the network, as constructing them is time-consuming. 
 
+根据[[1](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf), [2](https://arxiv.org/abs/1312.7013), [3](https://eprint.iacr.org/2014/007.pdf)], 节点应该广播所有具有有效工作证明的块，包括孤块，因为它们在主链中可能被称为叔块。有效的工作量证明不能用来污染网络，因为计算他们是消耗时间的。
+
 Our protocol’s block propagation protocol removes the extra round trip of fresh transactions in most occasions. When the round trip is inevitable, our protocol ensures that it only lasts for one hop in the propagation. This is achieved by the following three rules: 
 
+我们协议的区块传播协议在大多数情况下消除了新交易的额外往返广播。当往返广播不可避免时，我们的协议确保它仅在传播中持续一跳。这是通过以下三个规则实现的：
+
 1. If some committed transactions are previously unknown to the sending node, they will be embedded in the prefilled transaction list and sent along with the compact block. This only happens in a de facto selfish mining attack, as otherwise transactions are synchronized when they are proposed. This modification removes the extra round trip if the sender and the receiver share the same list of proposed, but-not-broadcast transactions. 
+
+1. 如果发送节点先前不知道某些已提交的交易，则它们将嵌入在预先填充的交易列表中并与致密区块一起发送。事实上，这只发生在自私挖矿攻击中，否则交易会在提案时同步。如果发送方和接收方共享相同的提案列表却非广播交易列表，则此修改将删除额外的往返广播。
+
 2. If certain committed transactions are still missing, the receiver queries the sender with a short timeout. Triggering this mechanism requires not only a successful de facto selfish mining attack, but also an attack on transaction propagation to cause inconsistent proposed transaction pools among the nodes. Failing to send these transactions in time leads to the receiver disconnecting and blacklisting the sender. Blocks with incomplete commitment zones will not be propagated further.
+
+2. 如果某些已提交的交易仍然丢失，则接收方将在短暂超时后查询发送方。触发此机制不仅需要成功的自私挖矿攻击，还需要对交易传播进行攻击，以使节点之间产生不一致的提案交易池。未能及时发送这些交易会导致接收方断开连接并将发送方列入黑名单。具有不完整提交区的区块将不会进一步传播。
 
 3. As long as the commitment zone is complete and valid, a node can start forwarding the compact block before receiving all newly-proposed transactions. In our protocol, a node requests the newly-proposed transactions from the upstream peer and sends compact blocks to other peers simultaneously. This modification does not downgrade the security as transactions in the proposal zone do not affect the block’s validity.
 
+3.只要提交区完整并有效，节点就可以在接收所有新提案的交易之前开始转发致密区块。在我们的协议中，节点从上游对等节点请求新提案的交易，并同时向其他对等节点发送致密块。此修改不会降低安全性，因为提案区中的交易不会影响区块的有效性。
 
 The first two rules ensure that the extra round trip caused by a de facto selfish mining attack never lasts for more than one hop.
+
+前两条规则确保了自私挖矿攻击造成的额外往返广播不会超过一跳。
 
 <a name="Dynamic-Difficulty-Adjustment-Mechanism"></a>
 ### 动态难度调整机制
