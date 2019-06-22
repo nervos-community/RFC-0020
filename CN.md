@@ -283,10 +283,10 @@ Note that if none of the edge cases are triggered, such as ![1559066233715](imag
 
 This result is consistent with our intuition. On one hand, if the last epoch’s orphan rate *o*<sub>*i*</sub> is larger than the ideal value *o*<sub>ideal</sub>, the target lowers, thus increasing the difficulty of finding a block and raising the block interval if the total hash rate is unchanged. Therefore, the orphan rate is lowered as it is more unlikely to find a block during another block’s propagation. On the other hand, the target increases if the last epoch’s orphan rate is lower than the ideal value, decreasing the block interval and raising the system’s throughput.
 
-#### Computing the Reward for Each Block
+#### 计算每个区块的奖励
 
-Now we can compute the reward for each block:
+现在我们可以计算每个区块的奖励:
 
 ![1559066526598](images/1559066526598.png)
 
-The two cases differ only in the edge cases. The first case guarantees that the total reward issued in epoch *i* + 1 will not exceed R(*i* + 1).
+这两种情况仅在边缘情况上有所不同。 第一种情况保证在epoch * i * + 1中发布的总奖励不会超过R（* i * + 1）。
