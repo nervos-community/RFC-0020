@@ -207,27 +207,35 @@ Additional constraints are introduced to maximize the protocol’s compatibility
 几个上限和下限应用于哈希率估算和主链块的数量，因此我们的协议不会损害网络的去中心化或抗攻击性。
 
 #### Notations
+#### 符号
 
 Similar to Nakamoto Consensus , our protocol’s difficulty adjustment algorithm is executed at the end of every epoch. It takes four inputs:
 
-| Name            | Description                          |
+与Nakamoto 共识相似，我们的协议难度调整算法在每个时代结束时执行。 它需要四个输入：
+
+| 名称            | 描述                          |
 | :-------------- | :----------------------------------- |
-| *T*<sub>*i*</sub>          | Last epoch’s target                       |
-| *L*<sub>*i*</sub> | Last epoch’s duration: the timestamp difference between epoch *i* and epoch (*i* − 1)’s last blocks |
-| *C*<sub>*i*,m</sub>   | Last epoch’s main chain block count      |
-| *C*<sub>*i*,o</sub>   | Last epoch’s orphan block count:  the number of uncles embedded in epoch *i*’s main chain         |
+| *T*<sub>*i*</sub>          | 上个时期的目标                       |
+| *L*<sub>*i*</sub> | 上一时期的持续时间: epoch *i* 和epoch（*i* - 1）的最后一个块之间的时间戳差异 |
+| *C*<sub>*i*,m</sub>   | 上一时期的主链区块总数      |
+| *C*<sub>*i*,o</sub>   | 上一时期的孤块数：epoch *i* 主链中嵌入的叔块总数        |
 
 Among these inputs, *T<sub>i</sub>* and *C*<sub>*i*,m</sub> are determined by the last iteration of difficulty adjustment; *L*<sub>*i*</sub> and *C*<sub>*i*,o</sub> are measured after the epoch ends. The orphan rate *o*<sub>*i*</sub> is calculated as *C*<sub>*i*,o</sub> / *C*<sub>*i*,m</sub>. We do not include *C*<sub>*i*,o</sub> in the denominator to simplify the equation. As some orphans at the end of the epoch might be excluded from the main chain by an attack, *o*<sub>*i*</sub> is a lower bound of the actual number. However, [the proportion of deliberately excluded orphans is negligible](https://eprint.iacr.org/2014/765.pdf) as long as the epoch is long enough, as the difficulty of orphaning a chain grows exponentially with the chain length. 
 
-The algorithm outputs three values:
+在这些输入中, *T<sub>i</sub>* 和 *C*<sub>*i*,m</sub> 由难度调整的最后一次迭代确定; *L*<sub>*i*</sub> 和 *C*<sub>*i*,o</sub> 在时期结束后测量. 孤块率 *o*<sub>*i*</sub> 计算为 *C*<sub>*i*,o</sub> / *C*<sub>*i*,m</sub>. 我们在分母中不包括 *C*<sub>*i*,o</sub> 来简化方程. 由于某些孤块在时期末期可能会被攻击排除在主链之外, 因此*o*<sub>*i*</sub> 是实际数字的下限. 然而, [故意排除孤块的比例可以忽略不计](https://eprint.iacr.org/2014/765.pdf) 只要时间足够长, 因为孤立链的难度随链长呈指数增长. 
 
-| Name            | Description                          |
+The algorithm outputs three values:
+该算法输出三个值:
+
+| 名称            | 描述                          |
 | :-------------- | :----------------------------------- |
-| *T*<sub>*i*+1</sub>          | Next epoch’s target                       |
-| *C*<sub>i+1,m</sub> | Next epoch’s main chain block count |
-| *r*<sub>*i*+1</sub>   | Next epoch’s block reward     |
+| *T*<sub>*i*+1</sub>          | 下一个时期的目标                        |
+| *C*<sub>i+1,m</sub> | 下一时期的主链区块总数  |
+| *r*<sub>*i*+1</sub>   | 下一时期的区块奖励     |
 
 If the network hash rate and block propagation latency remains constant, *o*<sub>*i*+1</sub> should reach the ideal value *o*<sub>ideal</sub>, unless *C*<sub>*i*+1,m</sub> is equal to its upper bound *C*<sub>m</sub><sup>max</sup>  or its lower bound *C*<sub>m</sub><sup>min</sup> . Epoch *i* + 1 ends when it reaches *C*<sub>*i*+1,m</sub> main chain blocks, regardless of how many uncles are embedded.
+
+如果网络哈希率和块传播延迟保持不变, *o*<sub>*i*+1</sub> 应达到理想值 *o*<sub>ideal</sub>, 除非 *C*<sub>*i*+1,m</sub> 等于其上限 *C*<sub>m</sub><sup>max</sup>  或者他的下限 *C*<sub>m</sub><sup>min</sup> . 时期 *i* + 1 在到达 *C*<sub>*i*+1,m</sub> 个主链块时结束, 无论嵌入了多少个叔块.
 
 #### Computing the Adjusted Hash Rate Estimation
 
