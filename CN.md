@@ -124,6 +124,10 @@ Our uncle definition is different from [that of Ethereum](https://github.com/eth
 
 It is possible that a proposed transaction is previously proposed, in conflict with other transactions, or even malformed. These incidents do not affect the block’s validity, as the proposal zone is used to facilitate transaction synchronization.
 
+> **定义 3:** 如果一个交易的`txpid`位于主链块的提案区，并且主链块高度为*h*<sub>p</sub> ，且为该区块的叔块为高度*h*<sub>p</sub> ， 则这个交易的提案高度为*h*<sub>p</sub>。
+
+提案的交易可能是以前提案的，与其他交易相冲突，甚至是畸形的。这些事件不影响区块的有效性，因为提案区用于促进交易同步。
+
 > **Definition 4:** A non-coinbase transaction is *committed* at height *h*<sub>c</sub> if all of the following conditions are met: 
 > ​	(1) the transaction is proposed at height *h*<sub>p</sub> of the same chain, and *w<sub>close</sub>  ≤  h<sub>c</sub> − h*<sub>p</sub>  ≤  *w<sub>far</sub>*
 > ​	(2) the transaction is in the commitment zone of the main chain block with height *h*<sub>c</sub>; 
