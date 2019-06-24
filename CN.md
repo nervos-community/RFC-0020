@@ -109,7 +109,7 @@ When multiple transactions share the same `txpid`s, all of them are considered p
 
 > **定义 1:** 一个交易提出的id `txpid`，`txpid` 是定义了交易哈希`txid` 的前*l*位bit 。
 
-在我们的协议中，`txpid` 不需要像`txid` 那样具有全局唯一性，因为`txid` 用于标识几个相邻块之间的交易。由于我们在区块和致密区块中都嵌入了`txpid` ，因此只发送缩短的`txid`s 可以减少带宽消耗。
+在我们的协议中，`txpid` 不需要像`txid` 那样具有全局唯一性，因为`txid` 用于标识几个相邻块之间的交易。由于我们在区块和致密区块中都嵌入了`txpid` ，因此只发送缩短的`txid` 可以减少带宽消耗。
 
 当多个交易共享相同的`txpid`时，所有这些都被认为是提案的。实际上，我们可以将 *l* 设置得足够大，这样查找碰撞的计算量是合理的。
 
