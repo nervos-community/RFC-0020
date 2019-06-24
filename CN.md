@@ -234,7 +234,7 @@ If the network hash rate and block propagation latency remains constant, *o*<sub
 
 The adjusted hash rate estimation, denoted as *HPS<sub>i</sub>* is computed by applying a dampening factor τ to the last epoch’s actual hash rate ![1559068235154](images/1559068235154.png). The actual hash rate is calculated as follows:
 
-调整后哈希率估值，标记为 *HPS<sub>i</sub>* 通过将阻尼因子τ应用于该周期（epoch）最终的实际哈希率 ![1559068235154](images/1559068235154.png) 来进行计算。实际哈希率计算如下：
+调整后哈希率估值，标记为 *HPS<sub>i</sub>* 通过将阻尼因子τ应用于最近周期（epoch）实际哈希率 ![1559068235154](images/1559068235154.png) 来进行计算。实际哈希率计算如下：
 
 ![1559064934639](images/1559064934639.png)
 
@@ -261,7 +261,7 @@ Now we apply the dampening filter:
 
 where *HPS*<sub>*i*−1</sub> denotes the adjusted hash rate estimation output by the last iteration of the difficulty adjustment algorithm. The dampening factor ensures that the adjusted hash rate estimation does not change more than a factor of τ between two consecutive epochs. This adjustment is equivalent to the Nakamoto Consensus application of a dampening filter. Bounding the adjustment speed prevents the attacker from arbitrarily biasing the difficulty and forging a blockchain, even if some victims’ network is temporarily controlled by the attacker.
 
-其中 *HPS*<sub>*i*−1</sub> 表示上一个周期难度调整算法算出的*调整后哈希率估值*。 阻尼因子确保在两个连续周期（epoch）之间的*调整后的哈希率估值*变化不会超过τ。 这种调整相当于阻尼滤波器的 Nakamoto 共识应用。 限制调整速度可以防止攻击者任意偏置难度并伪造区块链，即使攻击者临时控制了一些受害者的网络。
+其中 *HPS*<sub>*i*−1</sub> 表示上一个周期由难度调整算法输出的*调整后哈希率估值*。 阻尼因子确保在两个连续周期（epoch）之间的*调整后的哈希率估值*变化不会超过τ。 这种调整相当于阻尼滤波器的中本聪共识应用。 限制调整速度可以防止攻击者任意偏置难度并伪造区块链，即使攻击者临时控制了一些受害者的网络。
 
 #### Modeling Block Propagation
 
