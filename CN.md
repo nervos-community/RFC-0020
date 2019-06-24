@@ -124,6 +124,7 @@ Our uncle definition is different from [that of Ethereum](https://github.com/eth
 >​	(1) 区块*B*<sub>1</sub> 和 区块*B*<sub>2</sub> 在同一个周期, 有相同的难度；
 >​	(2) 高度(*B*<sub>2</sub>) > 高度(*B*<sub>1</sub>)；
 >​	(3) *B*<sub>2</sub> 是其链中第一个引用 *B*<sub>1</sub> 的区块；
+
 我们的叔块定义不同于[Ethereum](https://github.com/ethereum/wiki/wiki/White-Paper#modified-ghost-implementation), 因为我们不考虑两个块的第一个共同祖先有多远，只要两个区块在同一个周期。
 
 
