@@ -230,11 +230,11 @@ The algorithm outputs three values:
 If the network hash rate and block propagation latency remains constant, *o*<sub>*i*+1</sub> should reach the ideal value *o*<sub>ideal</sub>, unless *C*<sub>*i*+1,m</sub> is equal to its upper bound *C*<sub>m</sub><sup>max</sup>  or its lower bound *C*<sub>m</sub><sup>min</sup> . Epoch *i* + 1 ends when it reaches *C*<sub>*i*+1,m</sub> main chain blocks, regardless of how many uncles are embedded.
 
 #### Computing the Adjusted Hash Rate Estimation
-#### 计算调整后的哈希率估计
+#### 估算调整后的哈希率
 
 The adjusted hash rate estimation, denoted as *HPS<sub>i</sub>* is computed by applying a dampening factor τ to the last epoch’s actual hash rate ![1559068235154](images/1559068235154.png). The actual hash rate is calculated as follows:
 
-调整的哈希率估计，标记为 *HPS<sub>i</sub>* 通过将阻尼因子τ应用于最后时期的实际哈希率 ![1559068235154](images/1559068235154.png) 来进行计算。实际哈希率计算如下：
+*调整后哈希率估值*，标记为 *HPS<sub>i</sub>* 通过将阻尼因子τ应用于该时期最终的实际哈希率 ![1559068235154](images/1559068235154.png) 来进行计算。实际哈希率计算如下：
 
 ![1559064934639](images/1559064934639.png)
 
@@ -244,22 +244,24 @@ where:
 - HSpace/*T<sub>i</sub>* is the expected number of hash operations to find a valid block, and 
 - *C*<sub>*i*,m</sub> + *C*<sub>*i*,o</sub> is the total number of blocks in epoch *i*
 
-哪里:
+其中:
 
 - HSpace 是整个哈希空间的大小，例如比特币中的2 ^ 256,
-- HSpace/*T<sub>i</sub>* 是查找有效块的预期哈希操作数, and 
+- HSpace/*T<sub>i</sub>* 是查找有效块的预期哈希操作数,  
 - *C*<sub>*i*,m</sub> + *C*<sub>*i*,o</sub> 是时期 *i* 的区块总数
 
-![1559068266162](images/1559068266162.png) 通过将预期的总哈希操作除以持续时间 *L<sub>i</sub>* 来计算
+![1559068266162](images/1559068266162.png) is computed by dividing the expected total hash operations with the duration *L<sub>i</sub>*
+
+通过将预期的总哈希操作除以持续时间 *L<sub>i</sub>* 来计算
 
 Now we apply the dampening filter:
-现在我们应用阻尼过滤器:
+现在我们应用阻尼滤波器:
 
 ![1559064108898](images/1559064108898.png)
 
 where *HPS*<sub>*i*−1</sub> denotes the adjusted hash rate estimation output by the last iteration of the difficulty adjustment algorithm. The dampening factor ensures that the adjusted hash rate estimation does not change more than a factor of τ between two consecutive epochs. This adjustment is equivalent to the Nakamoto Consensus application of a dampening filter. Bounding the adjustment speed prevents the attacker from arbitrarily biasing the difficulty and forging a blockchain, even if some victims’ network is temporarily controlled by the attacker.
 
-其中 *HPS*<sub>*i*−1</sub> 表示通过难度调整算法的最后一次迭代输出的调整后的哈希率估计。 阻尼因子确保调整后的哈希率估计在两个连续时期之间的变化不会超过τ。 这种调整相当于阻尼过滤器的Nakamoto 共识应用。 限制调整速度可以防止攻击者任意偏置难度并伪造区块链，即使攻击者临时控制了一些受害者的网络。
+其中 *HPS*<sub>*i*−1</sub> 表示上一个时期的*调整后哈希率估值*。 阻尼因子确保在两个连续时期之间的*调整后的哈希率估值*变化不会超过τ。 这种调整相当于阻尼滤波器的 Nakamoto 共识应用。 限制调整速度可以防止攻击者任意偏置难度并伪造区块链，即使攻击者临时控制了一些受害者的网络。
 
 #### Modeling Block Propagation
 
