@@ -120,6 +120,13 @@ When multiple transactions share the same `txpid`s, all of them are considered p
 
 Our uncle definition is different from [that of Ethereum](https://github.com/ethereum/wiki/wiki/White-Paper#modified-ghost-implementation), in that we do not consider how far away the two blocks' first common ancestor is, as long as the two blocks are in the same epoch.
 
+> **定义 2:** 一个区块 *B*<sub>1</sub> 被认为是另一个区块 *B*<sub>2</sub> 的叔块，如符合下列所有条件：
+>​	(1) 区块*B*<sub>1</sub> 和 区块*B*<sub>2</sub> 在同一个周期, 有相同的难度；
+>​	(2) 高度(*B*<sub>2</sub>) > 高度(*B*<sub>1</sub>)；
+>​	(3) *B*<sub>2</sub> 是其链中第一个引用 *B*<sub>1</sub> 的区块；
+我们的叔块定义不同于[Ethereum](https://github.com/ethereum/wiki/wiki/White-Paper#modified-ghost-implementation), 因为我们不考虑两个块的第一个共同祖先有多远，只要两个区块在同一个周期。
+
+
 > **Definition 3:** A transaction is *proposed* at height *h*<sub>p</sub> if its `txpid` is in the proposal zone of the main chain block with height *h*<sub>p</sub> and this block’s uncles. 
 
 It is possible that a proposed transaction is previously proposed, in conflict with other transactions, or even malformed. These incidents do not affect the block’s validity, as the proposal zone is used to facilitate transaction synchronization.
