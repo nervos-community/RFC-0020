@@ -149,6 +149,20 @@ A transaction is considered embedded in the blockchain when it is committed. The
 
 In practice, this *w<sub>close</sub>* - block extra delay is compensated by our protocol’s shortened block interval, so that the usability is not affected.
 
+> **定义 4:** 一个非coinbase交易将被提交在高度 *h*<sub>c</sub> ，如果满足以下所有条件
+> ​	(1) 该交易在同一链的高度*h*<sub>p</sub> 提案, 并且 *w<sub>close</sub>  ≤  h<sub>c</sub> − h*<sub>p</sub>  ≤  *w<sub>far</sub>*
+> ​	(2) 该交易位于主链块的提交区，高度为 *h*<sub>c</sub>; 
+> ​	(3) 该交易与主链中之前提交的任何交易没有冲突。
+> coinbase交易在高度*h*<sub>c</sub> 时提交(如果满足(2))。
+
+*w<sub>close</sub>* 和 *w<sub>far</sub>* 定义了交易提案与提交之间链上最靠近和最远的距离。我们要求*w<sub>close</sub>* 足够大，使*w<sub>close</sub>* 区块间隔足够长，以便将交易传播到网络。
+
+这两个参数还根据节点内存中提案交易池的最大交易数来设置。由于提案的交易总数有限，所以可以将它们存储在内存中，因此在大多数情况下不需要从硬盘中获取新提交的交易。
+
+当提交交易时，交易被认为嵌入到区块链中。因此,接收者需要σ确认，则至少需要等待*w<sub>close</sub>* + σ区块交易广播后，有对交易的信任。
+
+事实上，*w<sub>close</sub>* - 区块的额外延迟由我们的协议缩短的区块间隔来补偿，这样就不会影响可用性。
+
 #### 区块和致密区块结构
 
 在我们的协议中，一个区块包含以下几部分:
