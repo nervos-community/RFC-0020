@@ -106,19 +106,19 @@ In our protocol, `txpid` does not need to be as globally unique as `txid`, as a 
 
 When multiple transactions share the same `txpid`s, all of them are considered proposed. In practice, we can set *l* to be large enough so that the computational effort of finding a collision is non-trivial.
 
-
-> **定义 1:** 一个交易提出的id `txpid`，`txpid` 是定义了交易哈希`txid` 的前*l*位bit 。
-
-在我们的协议中，`txpid` 不需要像`txid` 那样具有全局唯一性，因为`txid` 用于标识几个相邻块之间的交易。由于我们在区块和致密区块中都嵌入了`txpid` ，因此只发送缩短的`txid` 可以减少带宽消耗。
-
-当多个交易共享相同的`txpid`时，所有这些都被认为是提案的。实际上，我们可以将 *l* 设置得足够大，这样查找碰撞的计算量是合理的。
-
 > **Definition 2:** A block *B*<sub>1</sub> is considered to be the *uncle* of another block *B*<sub>2</sub> if all of the following conditions are met:
 >​	(1) *B*<sub>1</sub> and *B*<sub>2</sub> are in the same epoch, sharing the same difficulty;
 >​	(2) height(*B*<sub>2</sub>) > height(*B*<sub>1</sub>);
 >​	(3) *B*<sub>2</sub> is the first block in its chain to refer to *B*<sub>1</sub>. 
 
 Our uncle definition is different from [that of Ethereum](https://github.com/ethereum/wiki/wiki/White-Paper#modified-ghost-implementation), in that we do not consider how far away the two blocks' first common ancestor is, as long as the two blocks are in the same epoch.
+
+> **定义 2:** 一个区块 *B*<sub>1</sub> 被认为是另一个区块 *B*<sub>2</sub> 的叔块，如符合下列所有条件：
+>​	(1) 区块*B*<sub>1</sub> 和 区块*B*<sub>2</sub> 在同一个周期, 有相同的难度；
+>​	(2) 高度(*B*<sub>2</sub>) > 高度(*B*<sub>1</sub>)；
+>​	(3) *B*<sub>2</sub> 是其链中第一个引用 *B*<sub>1</sub> 的区块；
+
+我们的叔块定义不同于[that of Ethereum](https://github.com/ethereum/wiki/wiki/White-Paper#modified-ghost-implementation), 因为我们不考虑两个块的第一个共同祖先有多远，只要两个区块在同一个周期。
 
 > **Definition 3:** A transaction is *proposed* at height *h*<sub>p</sub> if its `txpid` is in the proposal zone of the main chain block with height *h*<sub>p</sub> and this block’s uncles. 
 
