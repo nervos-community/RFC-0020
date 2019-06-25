@@ -326,16 +326,20 @@ If we join this equation with Equation (2), we can solve for *dp*:
 
 where *o<sub>i</sub>* is last epoch’s orphan rate.
 
-#### 计算下一个周期的主链块号
-If the next epoch’s block propagation proceeds identically to the last epoch, the value *dp* should remain unchanged. In order to achieve the ideal orphan rate *o*<sub>ideal</sub> and the ideal epoch duration *L*<sub>ideal</sub>, following the same reasoning with Equation (4). We should have:	
+#### 计算下一个周期(epoch)的主链块号
+If the next epoch’s block propagation proceeds identically to the last epoch, the value *dp* should remain unchanged. In order to achieve the ideal orphan rate *o*<sub>ideal</sub> and the ideal epoch duration *L*<sub>ideal</sub>, following the same reasoning with Equation (4). We should have:
 
-如果下一个周期的块传播与上一个周期相同地进行, 这个值 *dp* 应保持不变. 为了达到理想的孤块率 *o*<sub>ideal</sub> 和离线的周期持续时间 *L*<sub>ideal</sub>, 遵循与等式（4）相同的推理。 我们应该：
+如果下一个周期(epoch)的区块传播收益与上一个周期(epoch)相同, 这个值 *dp* 应保持不变. 为了达到理想的孤块率 *o*<sub>ideal</sub> 和理想的周期(epoch)持续时间 *L*<sub>ideal</sub>, 遵循与等式（4）相同的推理。 我们应该：
 
 ![1559065197341](images/1559065197341.png)
 
 
 
-其中 ![1559065416713](images/1559065416713.png)是下一个时代的主链区块的数量, 如果我们唯一的目标是实现 *o*<sub>ideal</sub> 和 *L*<sub>ideal</sub> . 
+where ![1559065416713](images/1559065416713.png)is the number of main chain blocks in the next epoch, if our only goal is to achieve *o*<sub>ideal</sub> and *L*<sub>ideal</sub> . 
+
+By joining Equation (4) and (5), we can solve for ![1559065488436](images/1559065416713.png):
+
+其中 ![1559065416713](images/1559065416713.png)是下一个周期(epoch)的主链区块的数量, 如果我们唯一的目标是实现 *o*<sub>ideal</sub> 和 *L*<sub>ideal</sub> . 
 
 通过连接方程（4）和（5），我们可以求解 ![1559065488436](images/1559065416713.png):
 
@@ -343,11 +347,15 @@ If the next epoch’s block propagation proceeds identically to the last epoch, 
 
 
 
+Now we can apply the upper and lower bounds to![1559065488436](images/1559065416713.png) and get *C*<sub>*i*+1,m</sub>:
+
 现在我们可以应用上限和下限![1559065488436](images/1559065416713.png) 来获取 *C*<sub>*i*+1,m</sub>:
 
 ![1559065670251](images/1559065670251.png)
 
-应用下限可确保攻击者无法故意挖掘孤立块以任意增加块间隔; 应用上限可确保我们的协议不会确认更多交易比大多数节点的容量。
+Applying a lower bound ensures that an attacker cannot mine orphaned blocks deliberately to arbitrarily increase the block interval; applying an upper bound ensures that our protocol does not confirm more transactions than the capacity of most nodes.
+
+应用下限可确保攻击者无法故意挖掘孤块以任意增加区块间隔; 应用上限可确保我们的协议确认交易的数量不会超过大多数节点。
 
 #### 测定目标难度
 
