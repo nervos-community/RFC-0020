@@ -308,19 +308,31 @@ where *HPS*<sub>*i*−1</sub> denotes the adjusted hash rate estimation output b
 
 #### Modeling Block Propagation
 
+#### 区块传播建模
+
 It is difficult, if not impossible, to model the detailed block propagation procedure, given that the network topology changes constantly over time. Luckily, for our purpose, it is adequate to express the influence of block propagation with two parameters, which will be used to compute *C*<sub>*i*+1,m</sub>  later.
 
+考虑到网络拓扑结构会随着时间不断变化，即使有可能，对详细的区块传播过程建模也很难。幸运的是，对于我们的目的，用两个参数来表示区块传播的影响是足够的， 它将用来计算 *C*<sub>*i*+1,m</sub> 。
+
 We assume all blocks follow a similar propagation model, in line with [[1](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.395.8058&rep=rep1&type=pdf), [2](https://fc16.ifca.ai/bitcoin/papers/CDE+16.pdf)]. In the last epoch, it takes *d* seconds for a block to be propagated to the entire network, and during this process, the average fraction of mining power working on the block’s parent is *p*. Therefore, during this *d* seconds, *HPS*<sub>*i* </sub> × *dp* hash operations work on the parent, thus not contributing to extending the blockchain, while the rest *HPS*<sub>*i*</sub> × *d*(1 − *p*) hashes work on the new block. Consequently, in the last epoch, the total number of hashes that do not extend the blockchain is *HPS*<sub>*i*</sub>  × *dp* × *C*<sub>*i*,m</sub>. If some of these hashes lead to a block, one of the competing blocks will be orphaned. The number of hash operations working on observed orphaned blocks is HSpace/*T*<sub>*i*</sub> × *C*<sub>*i*,o</sub>. If we ignore the rare event that more than two competing blocks are found at the same height, we have:
+
+我们假设所有块都遵循类似的传播模型， 符合 [[1](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.395.8058&rep=rep1&type=pdf), [2](https://fc16.ifca.ai/bitcoin/papers/CDE+16.pdf)]。在最后一个周期中，一个区块传播到整个网络需要 *d* 秒，在这个过程中，在该区块的父节点上工作的挖矿功率的平均比例为*p*。 因此，在这*d*秒内，*HPS*<sub>*i* </sub> × *dp* 哈希操作在父节点上工作，无法扩展区块链，而其余的*HPS*<sub>*i*</sub> × *d*(1 − *p*) 哈希则用于新区块。因此，在最后一个周期，不扩展区块链的哈希总数是*HPS*<sub>*i*</sub>  × *dp* × *C*<sub>*i*,m</sub>。
+如果这些哈希指向一个区块，则其中一个竞争区块的将成为孤块。观察到的孤块上工作的哈希操作的数量是HSpace/*T*<sub>*i*</sub> × *C*<sub>*i*,o</sub>。如果我们忽略在同一高度发现两个以上竞争区块的罕见事件，我们有:
+
 
 ![1559064685714](images/1559064685714.png)
 
 namely
+
+也就是
 
 ![1559064995366](images/1559064995366.png)
 
 
 
 If we join this equation with Equation (2), we can solve for *dp*:
+
+如果我们将该方程与方程(2)结合，可得*dp*:
 
 ![1559065017925](images/1559065017925.png)
 
