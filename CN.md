@@ -233,11 +233,11 @@ Additional constraints are introduced to maximize the protocol’s compatibility
 
 1. All epochs have the same expected length Lideal, and the maximum block reward issued in an epoch R(i) depends only on the epoch number i, so that the dynamic block interval does not complicate the reward issuance policy.
 
-所有周期具有相同的预期长度 *L<sub>ideal</sub>*, 并且在周期 R(*i*) 中发布的最大块奖励仅取决于周期数 *i*, 因此动态块间隔不会使奖励发布策略复杂化. 
+1. 所有周期具有相同的预期长度 *L<sub>ideal</sub>*, 并且在周期 R(*i*) 中发布的最大块奖励仅取决于周期数 *i*, 因此动态块间隔不会使奖励发布策略复杂化. 
 
 2. Several upper and lower bounds are applied to the hash rate estimation and the number of main chain blocks, so that our protocol does not harm the decentralization or attack-resistance of the network.
 
-几个上限和下限应用于哈希率估值和主链块的数量，因此我们的协议不会影响网络的去中心化或抗攻击性。
+2. 在哈希率估值和主链区块数上应用设定了多个上下边界，这样我们的协议不会影响网络的去中心化与抗攻击性。
 
 #### Notations
 #### 一些数学符号
