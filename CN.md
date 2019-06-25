@@ -338,18 +338,20 @@ If we join this equation with Equation (2), we can solve for *dp*:
 
 where *o<sub>i</sub>* is last epoch’s orphan rate.
 
-其中*o<sub>i</sub>* 为最后一个周期的孤块率。
+#### 计算下一个周期(epoch)的主链块号
+If the next epoch’s block propagation proceeds identically to the last epoch, the value *dp* should remain unchanged. In order to achieve the ideal orphan rate *o*<sub>ideal</sub> and the ideal epoch duration *L*<sub>ideal</sub>, following the same reasoning with Equation (4). We should have:
 
-#### 计算下一个周期的主链块号
-If the next epoch’s block propagation proceeds identically to the last epoch, the value *dp* should remain unchanged. In order to achieve the ideal orphan rate *o*<sub>ideal</sub> and the ideal epoch duration *L*<sub>ideal</sub>, following the same reasoning with Equation (4). We should have:	
-
-如果下一个周期的块传播与上一个周期相同地进行, 这个值 *dp* 应保持不变. 为了达到理想的孤块率 *o*<sub>ideal</sub> 和离线的周期持续时间 *L*<sub>ideal</sub>, 遵循与等式（4）相同的推理。 我们应该：
+如果下一个周期(epoch)的区块传播收益与上一个周期(epoch)相同, 这个值 *dp* 应保持不变. 为了达到理想的孤块率 *o*<sub>ideal</sub> 和理想的周期(epoch)持续时间 *L*<sub>ideal</sub>, 遵循与等式（4）相同的推理。 我们应该：
 
 ![1559065197341](images/1559065197341.png)
 
 
 
-其中 ![1559065416713](images/1559065416713.png)是下一个时代的主链区块的数量, 如果我们唯一的目标是实现 *o*<sub>ideal</sub> 和 *L*<sub>ideal</sub> . 
+where ![1559065416713](images/1559065416713.png)is the number of main chain blocks in the next epoch, if our only goal is to achieve *o*<sub>ideal</sub> and *L*<sub>ideal</sub> . 
+
+By joining Equation (4) and (5), we can solve for ![1559065488436](images/1559065416713.png):
+
+其中 ![1559065416713](images/1559065416713.png)是下一个周期(epoch)的主链区块的数量, 如果我们唯一的目标是实现 *o*<sub>ideal</sub> 和 *L*<sub>ideal</sub> . 
 
 通过连接方程（4）和（5），我们可以求解 ![1559065488436](images/1559065416713.png):
 
@@ -357,40 +359,60 @@ If the next epoch’s block propagation proceeds identically to the last epoch, 
 
 
 
+Now we can apply the upper and lower bounds to![1559065488436](images/1559065416713.png) and get *C*<sub>*i*+1,m</sub>:
+
 现在我们可以应用上限和下限![1559065488436](images/1559065416713.png) 来获取 *C*<sub>*i*+1,m</sub>:
 
 ![1559065670251](images/1559065670251.png)
 
-应用下限可确保攻击者无法故意挖掘孤立块以任意增加块间隔; 应用上限可确保我们的协议不会确认更多交易比大多数节点的容量。
+Applying a lower bound ensures that an attacker cannot mine orphaned blocks deliberately to arbitrarily increase the block interval; applying an upper bound ensures that our protocol does not confirm more transactions than the capacity of most nodes.
+
+应用下限可确保攻击者无法故意挖掘孤块以任意增加区块间隔; 应用上限可确保我们的协议确认交易的数量不会超过大多数节点。
 
 #### 测定目标难度
 
-首先，我们介绍一个调整后的孤块率估算 ![1559065968791](images/1559065968791.png), 这将用于计算目标:
+First, we introduce an adjusted orphan rate estimation ![1559065968791](images/1559065968791.png), which will be used to compute the target:
+
+首先，我们介绍 调整后的孤块率估算 ![1559065968791](images/1559065968791.png), 这将用于计算目标:
 
 ![1559065997745](images/1559065997745.png)
 
 
 
-使用 ![1559065968791](images/1559065968791.png) 代替 *o*<sub>ideal</sub> 防止当当主链块编号达到上限或下限时出现一些不良情况。 现在我们可以计算 *T*<sub>*i*+1</sub>:
+Using ![1559065968791](images/1559065968791.png) instead of *o*<sub>ideal</sub> prevents some undesirable situations when the main chain block number reaches the upper or lower bound. Now we can compute *T*<sub>*i*+1</sub>:
+
+使用 ![1559065968791](images/1559065968791.png) 代替 *o*<sub>ideal</sub> 防止当主链区块号达到上限或下限时出现一些不良情况。 现在我们可以计算 *T*<sub>*i*+1</sub>:
 
 ![1559066101731](images/1559066101731.png)
 
-这里的 ![1559066131427](images/1559066131427.png) 是总哈希, ![1559066158164](images/1559066158164.png)是区块的总数. 
+where ![1559066131427](images/1559066131427.png) is the total hashes, ![1559066158164](images/1559066158164.png)is the total number of blocks. 
+
+The denominator in Equation (7) is the number of hashes required to find a block.
+
+其中 ![1559066131427](images/1559066131427.png) 是总哈希, ![1559066158164](images/1559066158164.png)是区块的总数. 
 
 方程 (7) 中的分母 是找到区块所需的哈希数量.
 
-注意，如果没有触发任何边缘情况, 如 ![1559066233715](images/1559066233715.png)![1559066249700](images/1559066249700.png) 或 ![1559066329440](images/1559066329440.png)  , 我们可以结合方程 (2), (6), 和 (7) 并得到：
+Note that if none of the edge cases are triggered, such as ![1559066233715](images/1559066233715.png)![1559066249700](images/1559066249700.png) or ![1559066329440](images/1559066329440.png)  , we can combine Equations (2), (6), and (7) and get:
+
+注意，如果没有触发任何边缘情况, 如 ![1559066233715](images/1559066233715.png)![1559066249700](images/1559066249700.png) 或 ![1559066329440](images/1559066329440.png)  , 我们可以结合方程 (2), (6), 和 (7) 并得到:
 
 ![1559066373372](images/1559066373372.png)
 
 
 
-这个结果与我们的直觉一致。 一方面，如果最后一个周期的孤块率 *o*<sub>*i*</sub> 大于理想值 *o*<sub>ideal</sub>, 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔. 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔。 另一方面，如果最后一个周期的孤块率低于理想值，则目标增加，减少了块间隔并提高了系统的吞吐量。
+This result is consistent with our intuition. On one hand, if the last epoch’s orphan rate *o*<sub>*i*</sub> is larger than the ideal value *o*<sub>ideal</sub>, the target lowers, thus increasing the difficulty of finding a block and raising the block interval if the total hash rate is unchanged. Therefore, the orphan rate is lowered as it is more unlikely to find a block during another block’s propagation. On the other hand, the target increases if the last epoch’s orphan rate is lower than the ideal value, decreasing the block interval and raising the system’s throughput.
+
+这个结果与我们的直觉一致。 一方面，如果最后一个周期（epoch）的孤块率 *o*<sub>*i*</sub> 大于理想值 *o*<sub>ideal</sub>, 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔. 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔。 另一方面，如果最后一个周期（epoch）的孤块率低于理想值，则目标增加，减少了区块间隔并提高了系统的吞吐量。
 
 #### 计算每个区块的奖励
+
+Now we can compute the reward for each block:
 
 现在我们可以计算每个区块的奖励:
 
 ![1559066526598](images/1559066526598.png)
 
-这两种情况仅在边缘情况上有所不同。 第一种情况保证在epoch * i * + 1中发布的总奖励不会超过R（* i * + 1）。
+The two cases differ only in the edge cases. The first case guarantees that the total reward issued in epoch *i* + 1 will not exceed R(*i* + 1).
+
+这两种情况仅在边缘情况上有所不同。 第一种情况保证在周期(epoch) *i* + 1 中发布的总奖励不会超过 R(*i* + 1)。
