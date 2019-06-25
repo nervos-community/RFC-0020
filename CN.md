@@ -45,7 +45,7 @@ Despite NC's merits, a scalability barrier hinders it from processing more than 
 
 Moreover, the security of NC is undermined by a [**selfish mining attack**](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf), which allows attackers to gain unfair block rewards by deliberately orphaning blocks mined by other miners. Researchers observe that the unfair profit roots in NC's difficulty adjustment mechanism, which neglects orphaned blocks when estimating the network's computing power. Through this mechanism, the increased orphan rate caused by selfish mining leads to lower mining difficulty, enabling the attacker's higher time-averaged block reward [[1](https://eprint.iacr.org/2016/555.pdf), [2](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-100.md), [3](https://arxiv.org/abs/1805.08281)].
 
-此外，NC的安全性受到[**自私挖矿攻击**](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf)的破坏，这使得攻击者可以通过故意孤立的其他矿工开采的块从而获得不公平的区块奖励。研究人员观察到，不公平的利润源于NC的难度调整机制，该机制在估计网络的计算能力时忽略了孤块的障碍。通过这种机制，自私挖矿导致的孤儿率上升导致挖矿难度降低，使攻击者获得高于平均的区块奖励[[1](https://eprint.iacr.org/2016/555.pdf), [2](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-100.md), [3](https://arxiv.org/abs/1805.08281)]。
+此外，NC的安全性受到[**自私挖矿攻击**](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf)的破坏，这使得攻击者可以通过故意孤立的其他矿工开采的块从而获得不公平的区块奖励。研究人员观察到，不公平的利润源于NC的难度调整机制，该机制在估计网络的计算能力时忽略了孤块的障碍。通过这种机制，自私挖矿导致的孤块率上升导致挖矿难度降低，使攻击者获得高于平均的区块奖励[[1](https://eprint.iacr.org/2016/555.pdf), [2](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-100.md), [3](https://arxiv.org/abs/1805.08281)]。
 
 In this RFC, we present the CKB consensus protocol, a consensus protocol that raises NC's performance limit and selfish mining resistance while keeping all NC's merits. Our protocol supports very short block interval by reducing the block propagation latency. The shortened block interval not only raises the blockchain's throughput, but also minimizes the transaction confirmation latency without decreasing the level of confidence, as the orphan rate remains low. Selfish mining is no longer profitable as we incorporate all blocks, including uncles, in the difficulty adjustment when estimating the network's computing power, so that the new difficulty is independent of the orphan rate.
 
@@ -86,7 +86,7 @@ Our protocol incorporate all blocks, including uncles, in the difficulty adjustm
 
 In addition, we prove that selfish mining is no longer profitable in our protocol. This prove is non-trivial as Vitalik, Grunspan and Perez-Marco's informal arguments do not rule out the possibility that the attacker adapts to the modified mechanism and still gets unfair block reward. For example, the attacker may temporarily turn off some mining gears in the first epoch, causing the modified difficulty adjustment algorithm to underestimate the network's computing power, and starts selfish mining in the second epoch for a higher overall time-averaged reward. We prove that in our protocol, selfish mining is not profitable regardless of how the attacker divides its mining power among honest mining, selfish mining and idle, and how many epochs the attack involves. The detailed proof will be released later.
 
-此外，我们证明自私挖矿在我们的协议中不再有利可图。这个证明是意义重大的，因为Vitalik，Grunspan和Perez-Marco的非正式论证并不能排除攻击者适应修改后的机制并仍然获得不公平的区块奖励的可能性。例如，攻击者可能在第一个周期内暂时关闭一些采矿装备，导致修改后的难度调整算法低估网络的计算能力，并在第二个时期开始自私挖矿以获得更高的总体时间平均奖励。我们证明，在我们的协议中，无论攻击者如何将其挖矿能力划分为诚实的挖矿，自私挖矿和闲置，以及攻击涉及多少个周期，自私采矿都无利可图。详细证明将在稍后公布。
+此外，我们证明自私挖矿在我们的协议中不再有利可图。这个证明是意义重大的，因为Vitalik，Grunspan和Perez-Marco的非正式论证并不能排除攻击者适应修改后的机制并仍然获得不公平的区块奖励的可能性。例如，攻击者可能在第一个周期内暂时关闭一些采矿装备，导致修改后的难度调整算法低估网络的计算能力，并在第二个周期开始自私挖矿以获得更高的总体时间平均奖励。我们证明，在我们的协议中，无论攻击者如何将其挖矿能力划分为诚实的挖矿，自私挖矿和闲置，以及攻击涉及多少个周期，自私采矿都无利可图。详细证明将在稍后公布。
 
 <a name="Specification"></a>
 ## 规范
@@ -225,7 +225,7 @@ The first two rules ensure that the extra round trip caused by a de facto selfis
 
 We modify the Nakamoto Consensus difficulty adjustment mechanism, so that: (1) Selfish mining is no longer profitable; (2) Throughput is dynamically adjusted based on the network’s bandwidth and latency. To achieve (1), our protocol incorporates all blocks, instead of only the main chain, in calculating the adjusted hash rate estimation of the last epoch, which determines the amount of computing effort required in the next epoch for each reward unit. To achieve (2), our protocol calculates the number of main chain blocks in the next epoch with the last epoch’s orphan rate. The block reward and target are then computed by combining these results.
 
-我们修改了Nakamoto 共识难度调整机制，以便: (1) 自私挖矿不再有利可图; (2) 根据网络的带宽和延迟动态调整吞吐量。实现目标1, 我们的协议在计算上一个时期的**调整后的哈希率估计**时包含所有块而不是仅主链, ，其确定每个奖励单元的下一个时期所需的计算工作量. 实现目标2, 我们的协议计算下一个时期中具有最后一个时期的孤儿率的主链块的数量。然后通过组合这些结果来计算块奖励和目标。
+我们修改了Nakamoto 共识难度调整机制，以便: (1) 自私挖矿不再有利可图; (2) 根据网络的带宽和延迟动态调整吞吐量。实现目标1, 我们的协议在计算上一个周期的**调整后的哈希率估计**时包含所有块而不是仅主链, ，其确定每个奖励单元的下一个周期所需的计算工作量. 实现目标2, 我们的协议计算下一个周期中具有最后一个周期的孤块率的主链块的数量。然后通过组合这些结果来计算块奖励和目标。
 
 Additional constraints are introduced to maximize the protocol’s compatibility:
 
@@ -233,7 +233,7 @@ Additional constraints are introduced to maximize the protocol’s compatibility
 
 1. All epochs have the same expected length Lideal, and the maximum block reward issued in an epoch R(i) depends only on the epoch number i, so that the dynamic block interval does not complicate the reward issuance policy.
 
-所有时期具有相同的预期长度 *L<sub>ideal</sub>*, 并且在时期 R(*i*) 中发布的最大块奖励仅取决于时期数 *i*, 因此动态块间隔不会使奖励发布策略复杂化. 
+所有周期具有相同的预期长度 *L<sub>ideal</sub>*, 并且在周期 R(*i*) 中发布的最大块奖励仅取决于周期数 *i*, 因此动态块间隔不会使奖励发布策略复杂化. 
 
 2. Several upper and lower bounds are applied to the hash rate estimation and the number of main chain blocks, so that our protocol does not harm the decentralization or attack-resistance of the network.
 
@@ -244,35 +244,39 @@ Additional constraints are introduced to maximize the protocol’s compatibility
 
 Similar to Nakamoto Consensus , our protocol’s difficulty adjustment algorithm is executed at the end of every epoch. It takes four inputs:
 
-与Nakamoto 共识相似，我们的协议难度调整算法在每个时代结束时执行。 该算法需要四个入参：
+与中本聪共识相似，我们的协议难度调整算法在每个周期（epoch）结束时执行。 该算法需要四个入参：
 
 | 名称            | 描述                          |
 | :-------------- | :----------------------------------- |
-| *T*<sub>*i*</sub>          | 上个时期的目标                       |
-| *L*<sub>*i*</sub> | 上一时期的持续时间: epoch *i* 和 epoch（*i* - 1）的最后一个块之间的时间戳差异 |
-| *C*<sub>*i*,m</sub>   | 上一时期的主链区块总数      |
-| *C*<sub>*i*,o</sub>   | 上一时期的孤块数：epoch *i* 主链中嵌入的叔块总数        |
+| *T*<sub>*i*</sub>          | 上个周期（epoch）的目标                       |
+| *L*<sub>*i*</sub> | 上一周期的持续时间: 周期（epoch） *i* 与 周期（epoch）（*i* - 1）的最后一个块之间的时间戳差异 |
+| *C*<sub>*i*,m</sub>   | 上一周期的主链区块总数      |
+| *C*<sub>*i*,o</sub>   | 上一周期的孤块数：周期（epoch） *i* 主链中嵌入的叔块总数        |
 
 Among these inputs, *T<sub>i</sub>* and *C*<sub>*i*,m</sub> are determined by the last iteration of difficulty adjustment; *L*<sub>*i*</sub> and *C*<sub>*i*,o</sub> are measured after the epoch ends. The orphan rate *o*<sub>*i*</sub> is calculated as *C*<sub>*i*,o</sub> / *C*<sub>*i*,m</sub>. We do not include *C*<sub>*i*,o</sub> in the denominator to simplify the equation. As some orphans at the end of the epoch might be excluded from the main chain by an attack, *o*<sub>*i*</sub> is a lower bound of the actual number. However, [the proportion of deliberately excluded orphans is negligible](https://eprint.iacr.org/2014/765.pdf) as long as the epoch is long enough, as the difficulty of orphaning a chain grows exponentially with the chain length. 
 
-在这些入参中, *T<sub>i</sub>* 和 *C*<sub>*i*,m</sub> 由难度调整前的最后一次迭代确定; *L*<sub>*i*</sub> 和 *C*<sub>*i*,o</sub> 在时期结束后测量. 孤块率 *o*<sub>*i*</sub> 计算为 *C*<sub>*i*,o</sub> / *C*<sub>*i*,m</sub>. 我们在分母中不包括 *C*<sub>*i*,o</sub> 来简化方程. 由于某些孤块在时期末期可能会被攻击排除在主链之外, 因此*o*<sub>*i*</sub> 是实际数字的下限. 然而, [故意排除孤块的比例可以忽略不计](https://eprint.iacr.org/2014/765.pdf) 只要时间足够长, 因为孤链的难度随链长呈指数增长. 
+在这些入参中, *T<sub>i</sub>* 和 *C*<sub>*i*,m</sub> 由最近一次难度调整确定; *L*<sub>*i*</sub> 和 *C*<sub>*i*,o</sub> 在周期（epoch）结束后测量. 孤块率 *o*<sub>*i*</sub> 计算为 *C*<sub>*i*,o</sub> / *C*<sub>*i*,m</sub>. 我们在分母中不包括 *C*<sub>*i*,o</sub> 来简化方程. 由于某些孤块在周期（epoch）末期可能会被攻击排除在主链之外, 因此*o*<sub>*i*</sub> 是实际数字的下限. 然而, [故意排除孤块的比例可以忽略不计](https://eprint.iacr.org/2014/765.pdf) 只要时间足够长, 因为孤链的难度随链长呈指数增长. 
 
 The algorithm outputs three values:
 该算法输出三个值:
 
 | 名称            | 描述                          |
 | :-------------- | :----------------------------------- |
-| *T*<sub>*i*+1</sub>          | 下一个时期的目标                        |
-| *C*<sub>i+1,m</sub> | 下一时期的主链区块总数  |
-| *r*<sub>*i*+1</sub>   | 下一时期的区块奖励     |
+| *T*<sub>*i*+1</sub>          | 下一个周期（epoch）的目标                        |
+| *C*<sub>i+1,m</sub> | 下一周期（epoch）的主链区块总数  |
+| *r*<sub>*i*+1</sub>   | 下一周期（epoch）的区块奖励     |
 
 If the network hash rate and block propagation latency remains constant, *o*<sub>*i*+1</sub> should reach the ideal value *o*<sub>ideal</sub>, unless *C*<sub>*i*+1,m</sub> is equal to its upper bound *C*<sub>m</sub><sup>max</sup>  or its lower bound *C*<sub>m</sub><sup>min</sup> . Epoch *i* + 1 ends when it reaches *C*<sub>*i*+1,m</sub> main chain blocks, regardless of how many uncles are embedded.
 
-如果网络哈希率和区块传播延迟保持不变, *o*<sub>*i*+1</sub> 应达到理想值 *o*<sub>ideal</sub>, 除非 *C*<sub>*i*+1,m</sub> 等于其上限 *C*<sub>m</sub><sup>max</sup>  或者他的下限 *C*<sub>m</sub><sup>min</sup> . 时期 *i* + 1 在到达 *C*<sub>*i*+1,m</sub> 个主链块时结束, 无论嵌入了多少个叔块.
+如果网络哈希率和区块传播延迟保持不变, *o*<sub>*i*+1</sub> 应达到理想值 *o*<sub>ideal</sub>, 除非 *C*<sub>*i*+1,m</sub> 等于其上限 *C*<sub>m</sub><sup>max</sup>  或者他的下限 *C*<sub>m</sub><sup>min</sup> . 周期（epoch） *i* + 1 在到达 *C*<sub>*i*+1,m</sub> 个主链块时结束, 无论嵌入了多少个叔块.
 
 #### Computing the Adjusted Hash Rate Estimation
 
+#### 计算调整后的哈希率估值
+
 The adjusted hash rate estimation, denoted as *HPS<sub>i</sub>* is computed by applying a dampening factor τ to the last epoch’s actual hash rate ![1559068235154](images/1559068235154.png). The actual hash rate is calculated as follows:
+
+调整后的散列率估值,表示为*HPS<sub>i</sub>* ，他通过抑制因子 τ 应用在上个周期的实际哈希率 ![1559068235154](images/1559068235154.png) 计算。 实际哈希率计算如下:
 
 ![1559064934639](images/1559064934639.png)
 
@@ -282,13 +286,25 @@ where:
 - HSpace/*T<sub>i</sub>* is the expected number of hash operations to find a valid block, and 
 - *C*<sub>*i*,m</sub> + *C*<sub>*i*,o</sub> is the total number of blocks in epoch *i*
 
+注：
+- HSpace是整个哈希空间的大小，例如比特币是2^256，
+- HSpace/*T<sub>i</sub>* 是查找有效块的哈希操作的期望数
+- *C*<sub>*i*,m</sub> + *C*<sub>*i*,o</sub> 是指周期 *i* 中的块总数
+
 ![1559068266162](images/1559068266162.png) is computed by dividing the expected total hash operations with the duration *L<sub>i</sub>*
 
+![1559068266162](images/1559068266162.png) 计算方法是将预期的总哈希除以持续时间 *L<sub>i</sub>* 。
+
 Now we apply the dampening filter:
+
+现在我们应用抑制过滤器：
 
 ![1559064108898](images/1559064108898.png)
 
 where *HPS*<sub>*i*−1</sub> denotes the adjusted hash rate estimation output by the last iteration of the difficulty adjustment algorithm. The dampening factor ensures that the adjusted hash rate estimation does not change more than a factor of τ between two consecutive epochs. This adjustment is equivalent to the Nakamoto Consensus application of a dampening filter. Bounding the adjustment speed prevents the attacker from arbitrarily biasing the difficulty and forging a blockchain, even if some victims’ network is temporarily controlled by the attacker.
+
+式中*HPS*<sub>*i*−1</sub> 表示由最后一次迭代的难度调整算法得到调整后的哈希率估值输出。抑制因子确保调整后的哈希率估值在连续两个周期之间的不会改变超过τ。这一调整相当于NC应用的抑制过滤器。调整速度限制，可以防止攻击者任意偏置难度和伪造区块链，即使一些受害者的网络暂时由攻击者控制。
+
 
 #### Modeling Block Propagation
 
@@ -310,10 +326,10 @@ If we join this equation with Equation (2), we can solve for *dp*:
 
 where *o<sub>i</sub>* is last epoch’s orphan rate.
 
-#### 计算下一个时期的主链块号
+#### 计算下一个周期的主链块号
 If the next epoch’s block propagation proceeds identically to the last epoch, the value *dp* should remain unchanged. In order to achieve the ideal orphan rate *o*<sub>ideal</sub> and the ideal epoch duration *L*<sub>ideal</sub>, following the same reasoning with Equation (4). We should have:	
 
-如果下一个时期的块传播与上一个时期相同地进行, 这个值 *dp* 应保持不变. 为了达到理想的孤儿率 *o*<sub>ideal</sub> 和离线的时期持续时间 *L*<sub>ideal</sub>, 遵循与等式（4）相同的推理。 我们应该：
+如果下一个周期的块传播与上一个周期相同地进行, 这个值 *dp* 应保持不变. 为了达到理想的孤块率 *o*<sub>ideal</sub> 和离线的周期持续时间 *L*<sub>ideal</sub>, 遵循与等式（4）相同的推理。 我们应该：
 
 ![1559065197341](images/1559065197341.png)
 
@@ -335,7 +351,7 @@ If the next epoch’s block propagation proceeds identically to the last epoch, 
 
 #### 测定目标难度
 
-首先，我们介绍一个调整后的孤儿率估算 ![1559065968791](images/1559065968791.png), 这将用于计算目标:
+首先，我们介绍一个调整后的孤块率估算 ![1559065968791](images/1559065968791.png), 这将用于计算目标:
 
 ![1559065997745](images/1559065997745.png)
 
@@ -355,7 +371,7 @@ If the next epoch’s block propagation proceeds identically to the last epoch, 
 
 
 
-这个结果与我们的直觉一致。 一方面，如果最后一个时期的孤儿率 *o*<sub>*i*</sub> 大于理想值 *o*<sub>ideal</sub>, 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔. 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔。 另一方面，如果最后一个时期的孤儿率低于理想值，则目标增加，减少了块间隔并提高了系统的吞吐量。
+这个结果与我们的直觉一致。 一方面，如果最后一个周期的孤块率 *o*<sub>*i*</sub> 大于理想值 *o*<sub>ideal</sub>, 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔. 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔。 另一方面，如果最后一个周期的孤块率低于理想值，则目标增加，减少了块间隔并提高了系统的吞吐量。
 
 #### 计算每个区块的奖励
 
