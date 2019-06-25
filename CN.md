@@ -272,7 +272,11 @@ If the network hash rate and block propagation latency remains constant, *o*<sub
 
 #### Computing the Adjusted Hash Rate Estimation
 
+#### 计算调整后的哈希率估值
+
 The adjusted hash rate estimation, denoted as *HPS<sub>i</sub>* is computed by applying a dampening factor τ to the last epoch’s actual hash rate ![1559068235154](images/1559068235154.png). The actual hash rate is calculated as follows:
+
+调整后的散列率估值,表示为*HPS<sub>i</sub>* ，他通过抑制因子 τ 应用在上个周期的实际哈希率 ![1559068235154](images/1559068235154.png) 计算。 实际哈希率计算如下:
 
 ![1559064934639](images/1559064934639.png)
 
@@ -282,13 +286,25 @@ where:
 - HSpace/*T<sub>i</sub>* is the expected number of hash operations to find a valid block, and 
 - *C*<sub>*i*,m</sub> + *C*<sub>*i*,o</sub> is the total number of blocks in epoch *i*
 
+注：
+- HSpace是整个哈希空间的大小，例如比特币是2^256，
+- HSpace/*T<sub>i</sub>* 是查找有效块的哈希操作的期望数
+- *C*<sub>*i*,m</sub> + *C*<sub>*i*,o</sub> 是指周期 *i* 中的块总数
+
 ![1559068266162](images/1559068266162.png) is computed by dividing the expected total hash operations with the duration *L<sub>i</sub>*
 
+![1559068266162](images/1559068266162.png) 计算方法是将预期的总哈希除以持续时间 *L<sub>i</sub>* 。
+
 Now we apply the dampening filter:
+
+现在我们应用抑制过滤器：
 
 ![1559064108898](images/1559064108898.png)
 
 where *HPS*<sub>*i*−1</sub> denotes the adjusted hash rate estimation output by the last iteration of the difficulty adjustment algorithm. The dampening factor ensures that the adjusted hash rate estimation does not change more than a factor of τ between two consecutive epochs. This adjustment is equivalent to the Nakamoto Consensus application of a dampening filter. Bounding the adjustment speed prevents the attacker from arbitrarily biasing the difficulty and forging a blockchain, even if some victims’ network is temporarily controlled by the attacker.
+
+式中*HPS*<sub>*i*−1</sub> 表示由最后一次迭代的难度调整算法得到调整后的哈希率估值输出。抑制因子确保调整后的哈希率估值在连续两个周期之间的不会改变超过τ。这一调整相当于NC应用的抑制过滤器。调整速度限制，可以防止攻击者任意偏置难度和伪造区块链，即使一些受害者的网络暂时由攻击者控制。
+
 
 #### Modeling Block Propagation
 
