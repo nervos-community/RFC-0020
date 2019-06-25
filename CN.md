@@ -225,11 +225,11 @@ The first two rules ensure that the extra round trip caused by a de facto selfis
 
 We modify the Nakamoto Consensus difficulty adjustment mechanism, so that: (1) Selfish mining is no longer profitable; (2) Throughput is dynamically adjusted based on the network’s bandwidth and latency. To achieve (1), our protocol incorporates all blocks, instead of only the main chain, in calculating the adjusted hash rate estimation of the last epoch, which determines the amount of computing effort required in the next epoch for each reward unit. To achieve (2), our protocol calculates the number of main chain blocks in the next epoch with the last epoch’s orphan rate. The block reward and target are then computed by combining these results.
 
-我们修改了Nakamoto 共识难度调整机制，以便: (1) 自私挖矿不再有利可图; (2) 根据网络的带宽和延迟动态调整吞吐量。实现目标1, 我们的协议在计算上一个周期的**调整后的哈希率估计**时包含所有块而不是仅主链, ，其确定每个奖励单元的下一个周期所需的计算工作量. 实现目标2, 我们的协议计算下一个周期中具有最后一个周期的孤块率的主链块的数量。然后通过组合这些结果来计算块奖励和目标。
+我们修改了中本聪共识（NC）难度调整机制，以便: (1) 自私挖矿不再有利可图; (2) 根据网络的带宽和延迟动态调整吞吐量。为了实现目标（1）, 我们的协议包含所有块而不是仅主链，用来计算上一个周期的调整后的哈希率估值,每决定了下个奖励单元的下一个周期所需的计算工作量. 为了实现目标（2）, 我们的协议使用上一个周期的孤块率计算下一个周期中的主链块数。然后结合这些结果计算区块奖励和目标。
 
 Additional constraints are introduced to maximize the protocol’s compatibility:
 
-引入了附加约束以最大化协议的兼容性:
+引入额外的限制，以最大限度地提高协议的兼容性:
 
 1. All epochs have the same expected length Lideal, and the maximum block reward issued in an epoch R(i) depends only on the epoch number i, so that the dynamic block interval does not complicate the reward issuance policy.
 
@@ -237,7 +237,7 @@ Additional constraints are introduced to maximize the protocol’s compatibility
 
 2. Several upper and lower bounds are applied to the hash rate estimation and the number of main chain blocks, so that our protocol does not harm the decentralization or attack-resistance of the network.
 
-几个上限和下限应用于哈希率估算和主链块的数量，因此我们的协议不会损害网络的去中心化或抗攻击性。
+几个上限和下限应用于哈希率估值和主链块的数量，因此我们的协议不会影响网络的去中心化或抗攻击性。
 
 #### Notations
 #### 一些数学符号
