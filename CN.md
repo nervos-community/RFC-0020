@@ -373,7 +373,7 @@ Applying a lower bound ensures that an attacker cannot mine orphaned blocks deli
 
 First, we introduce an adjusted orphan rate estimation ![1559065968791](images/1559065968791.png), which will be used to compute the target:
 
-首先，我们介绍 调整后的孤块率估算 ![1559065968791](images/1559065968791.png), 这将用于计算目标:
+首先，我们介绍 调整后的孤块率估值 ![1559065968791](images/1559065968791.png), 这将用于计算目标:
 
 ![1559065997745](images/1559065997745.png)
 
@@ -403,7 +403,7 @@ Note that if none of the edge cases are triggered, such as ![1559066233715](imag
 
 This result is consistent with our intuition. On one hand, if the last epoch’s orphan rate *o*<sub>*i*</sub> is larger than the ideal value *o*<sub>ideal</sub>, the target lowers, thus increasing the difficulty of finding a block and raising the block interval if the total hash rate is unchanged. Therefore, the orphan rate is lowered as it is more unlikely to find a block during another block’s propagation. On the other hand, the target increases if the last epoch’s orphan rate is lower than the ideal value, decreasing the block interval and raising the system’s throughput.
 
-这个结果与我们的直觉一致。 一方面，如果最后一个周期（epoch）的孤块率 *o*<sub>*i*</sub> 大于理想值 *o*<sub>ideal</sub>, 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔. 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔。 另一方面，如果最后一个周期（epoch）的孤块率低于理想值，则目标增加，减少了区块间隔并提高了系统的吞吐量。
+这个结果与我们的判断一致。 一方面，如果最后一个周期（epoch）的孤块率 *o*<sub>*i*</sub> 大于理想值 *o*<sub>ideal</sub>，则目标降低, 如果总哈希率不变，提高区块难度与区块间隔。因此，孤块率降低了，因为它更不可能在另一个区块的传播过程中找到一个块。另一方面，如果最后一个周期（epoch）的孤块率低于理想值，则目标增加，减少区块间隔，提高系统的吞吐量。
 
 #### 计算每个区块的奖励
 
