@@ -41,7 +41,7 @@ Although a number of non-NC consensus mechanisms have been proposed, NC has the 
 
 Despite NC's merits, a scalability barrier hinders it from processing more than a few transactions per second. Two parameters collectively cap the system's throughput: the maximum block size and the expected block interval. For example, Bitcoin enforces a roughly 4MB block size upper bound and targets a 10-minute block interval and  with its **difficulty adjustment mechanism**, translating to roughly ten transactions per second (TPS). Increasing the block size or reducing the block interval leads to longer block propagation latency or more frequent block generation events, respectively; both approaches raise the fraction of blocks generated during other blocks' propagation, thus raising the fraction of competing blocks. As at most one block among the competing ones contributes to transaction confirmation, the nodes' bandwidth on propagating other **orphaned blocks** is wasted, limiting the system's effective throughput. Moreover, raising the orphan rate downgrades the protocol's security by lowering the difficulty of double-spending attacks [[1](<https://fc15.ifca.ai/preproceedings/paper_30.pdf>), [2](<https://fc15.ifca.ai/preproceedings/paper_101.pdf>)].
 
-尽管NC有很多优点，但其可扩展性差阻碍了它每秒处理多笔交易。两个参数共同限制系统的吞吐量：最大区块容量和预期的块间隔。例如，比特币强制执行大约4MB的区块容量上限，并以10分钟的块间隔为目标，并且具有**动态难度调整机制**，换算为大约每秒10笔交易（TPS）。增加区块容量或减小区块间隔会导致更长时间的区块传播延迟或更频繁的出块;两种方法都提高了在其他块区传播期间生成的新块的比例，从而提高了竞争区块的比例。由于竞争对手中的最多只有一个块有助于交易确认，因此浪费了传播其他**孤块**的节点带宽，从而限制了系统的有效吞吐量。此外，提高孤块率会降低双花攻击的难度[[1](<https://fc15.ifca.ai/preproceedings/paper_30.pdf>), [2](<https://fc15.ifca.ai/preproceedings/paper_101.pdf>)]，从而降低协议的安全性。
+尽管NC具有很多优点，但其可扩展性差阻碍了它每秒处理多笔交易。两个参数共同限制系统的吞吐量：最大区块容量和预期的块间隔。例如，比特币强制执行大约4MB的区块容量上限，并以10分钟的块间隔为目标，并且具有**动态难度调整机制**，换算为大约每秒10笔交易（TPS）。增加区块容量或减小区块间隔会导致更长时间的区块传播延迟或更频繁的出块;两种方法都提高了在其他块区传播期间生成的新块的比例，从而提高了竞争区块的比例。由于竞争对手中的最多只有一个块有助于交易确认，因此浪费了传播其他**孤块**的节点带宽，从而限制了系统的有效吞吐量。此外，提高孤块率会降低双花攻击的难度[[1](<https://fc15.ifca.ai/preproceedings/paper_30.pdf>), [2](<https://fc15.ifca.ai/preproceedings/paper_101.pdf>)]，从而降低协议的安全性。
 
 Moreover, the security of NC is undermined by a [**selfish mining attack**](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf), which allows attackers to gain unfair block rewards by deliberately orphaning blocks mined by other miners. Researchers observe that the unfair profit roots in NC's difficulty adjustment mechanism, which neglects orphaned blocks when estimating the network's computing power. Through this mechanism, the increased orphan rate caused by selfish mining leads to lower mining difficulty, enabling the attacker's higher time-averaged block reward [[1](https://eprint.iacr.org/2016/555.pdf), [2](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-100.md), [3](https://arxiv.org/abs/1805.08281)].
 
@@ -373,7 +373,7 @@ Applying a lower bound ensures that an attacker cannot mine orphaned blocks deli
 
 First, we introduce an adjusted orphan rate estimation ![1559065968791](images/1559065968791.png), which will be used to compute the target:
 
-首先，我们介绍 调整后的孤块率估算 ![1559065968791](images/1559065968791.png), 这将用于计算目标:
+首先，我们介绍 调整后的孤块率估值 ![1559065968791](images/1559065968791.png), 这将用于计算目标:
 
 ![1559065997745](images/1559065997745.png)
 
@@ -403,7 +403,7 @@ Note that if none of the edge cases are triggered, such as ![1559066233715](imag
 
 This result is consistent with our intuition. On one hand, if the last epoch’s orphan rate *o*<sub>*i*</sub> is larger than the ideal value *o*<sub>ideal</sub>, the target lowers, thus increasing the difficulty of finding a block and raising the block interval if the total hash rate is unchanged. Therefore, the orphan rate is lowered as it is more unlikely to find a block during another block’s propagation. On the other hand, the target increases if the last epoch’s orphan rate is lower than the ideal value, decreasing the block interval and raising the system’s throughput.
 
-这个结果与我们的直觉一致。 一方面，如果最后一个周期（epoch）的孤块率 *o*<sub>*i*</sub> 大于理想值 *o*<sub>ideal</sub>, 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔. 则目标降低，因此如果总哈希率不变则增加找到块的难度并增加块间隔。 另一方面，如果最后一个周期（epoch）的孤块率低于理想值，则目标增加，减少了区块间隔并提高了系统的吞吐量。
+这个结果与我们的判断一致。 一方面，如果最后一个周期（epoch）的孤块率 *o*<sub>*i*</sub> 大于理想值 *o*<sub>ideal</sub>，则目标降低, 如果总哈希率不变，提高区块难度与区块间隔。因此，孤块率降低了，因为它更不可能在另一个区块的传播过程中找到一个块。另一方面，如果最后一个周期（epoch）的孤块率低于理想值，则目标增加，减少区块间隔，提高系统的吞吐量。
 
 #### 计算每个区块的奖励
 
