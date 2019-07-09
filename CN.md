@@ -10,6 +10,8 @@
  
  # CKB 共识协议
   
+  ![文档结构图](CKB%20%E5%85%B1%E8%AF%86%E5%8D%8F%E8%AE%AE.png)
+  
 * [概述](#Abstract)
 * [研究动机](#Motivation)
 * [技术概述](#Technical-Overview)
