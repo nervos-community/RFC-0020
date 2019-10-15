@@ -12,12 +12,12 @@
   
   ![文档结构图](CKB%20%E5%85%B1%E8%AF%86%E5%8D%8F%E8%AE%AE.png)
   
-* [概述](#Abstract)
-* [研究动机](#Motivation)
+* [摘要](#Abstract)
+* [动机](#Motivation)
 * [技术概述](#Technical-Overview)
   * [消除区块传播瓶颈](#Eliminating-the-Bottleneck-in-Block-Propagation)
   * [利用缩短的延迟提高吞吐量](#Utilizing-the-Shortened-Latency-for-Higher-Throughput)
-  * [避免自私挖矿攻击](#Mitigating-Selfish-Mining-Attacks)
+  * [减少自私挖矿攻击](#Mitigating-Selfish-Mining-Attacks)
 * [规范](#Specification)
   * [两步交易确认](#Two-Step-Transaction-Confirmation)
   * [动态难度调节机制](#Dynamic-Difficulty-Adjustment-Mechanism)
